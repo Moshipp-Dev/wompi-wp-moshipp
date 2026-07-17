@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Wompi Pagos — Nequi y Daviplata
  * Description: Acepta pagos con Nequi (notificación push) y Daviplata a través de Wompi Colombia. Compatible con el checkout clásico y el checkout por bloques de WooCommerce, y con HPOS.
- * Version: 0.3.1
+ * Version: 0.4.0
  * Author: Moshipp
  * Text Domain: wompi-moshipp
  * Domain Path: /languages
@@ -17,7 +17,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WOMPI_MP_VERSION', '0.3.1' );
+define( 'WOMPI_MP_VERSION', '0.4.0' );
 define( 'WOMPI_MP_PLUGIN_FILE', __FILE__ );
 define( 'WOMPI_MP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WOMPI_MP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -99,6 +99,7 @@ function wompi_mp_init() {
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-gateway-daviplata.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-webhook.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-admin-order.php';
+	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-settings-page.php';
 
 	add_filter( 'woocommerce_payment_gateways', 'wompi_mp_register_gateways' );
 	add_action( 'wp_enqueue_scripts', 'wompi_mp_enqueue_checkout_styles' );
@@ -108,18 +109,18 @@ function wompi_mp_init() {
 	Wompi_MP_Webhook::init();
 	Wompi_MP_Order_Sync::init();
 	Wompi_MP_Admin_Order::init();
+	Wompi_MP_Settings_Page::init();
 }
 
 /**
  * Estilos y JS de la pantalla de ajustes de los gateways Wompi.
  */
 function wompi_mp_enqueue_admin_assets( $hook ) {
-	if ( 'woocommerce_page_wc-settings' !== $hook ) {
-		return;
-	}
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo lectura para decidir si encolar assets.
-	$section = sanitize_key( wp_unslash( $_GET['section'] ?? '' ) );
-	if ( ! in_array( $section, array( 'wompi_nequi', 'wompi_daviplata' ), true ) ) {
+	$section         = sanitize_key( wp_unslash( $_GET['section'] ?? '' ) );
+	$is_gateway_page = 'woocommerce_page_wc-settings' === $hook && in_array( $section, array( 'wompi_nequi', 'wompi_daviplata' ), true );
+	$is_central_page = 'woocommerce_page_' . Wompi_MP_Settings_Page::SLUG === $hook;
+	if ( ! $is_gateway_page && ! $is_central_page ) {
 		return;
 	}
 

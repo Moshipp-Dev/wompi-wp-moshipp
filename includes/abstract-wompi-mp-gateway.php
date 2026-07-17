@@ -61,20 +61,6 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 		}
 	}
 
-	public function process_admin_options() {
-		$saved = parent::process_admin_options();
-
-		$shared = get_option( self::CREDENTIALS_OPTION, array() );
-		$shared = is_array( $shared ) ? $shared : array();
-		foreach ( self::SHARED_FIELDS as $field ) {
-			$shared[ $field ] = $this->get_option( $field );
-		}
-		update_option( self::CREDENTIALS_OPTION, $shared, false );
-
-		$this->api_client = null;
-		return $saved;
-	}
-
 	public function is_testmode(): bool {
 		return 'yes' === $this->get_option( 'testmode', 'yes' );
 	}
@@ -118,120 +104,21 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Campos de configuración compartidos (credenciales + webhook info).
+	 * Sección que apunta a la página central de configuración: las credenciales,
+	 * comisiones y webhook se administran UNA sola vez para ambos métodos.
 	 */
 	protected function shared_form_fields(): array {
 		return array(
-			'credentials_section'   => array(
-				'title'       => __( 'Credenciales Wompi (compartidas entre Nequi y Daviplata)', 'wompi-moshipp' ),
+			'central_settings' => array(
+				'title'       => __( 'Credenciales y configuración de Wompi', 'wompi-moshipp' ),
 				'type'        => 'title',
-				'description' => __( 'Obtén tus llaves en comercios.wompi.co. Estas credenciales se comparten entre los dos métodos de pago: editarlas aquí las actualiza para ambos.', 'wompi-moshipp' ),
-			),
-			'testmode'              => array(
-				'title'       => __( 'Modo de prueba (sandbox)', 'wompi-moshipp' ),
-				'type'        => 'checkbox',
-				'label'       => __( 'Usar el ambiente sandbox de Wompi (transacciones simuladas)', 'wompi-moshipp' ),
-				'default'     => 'yes',
-			),
-			'test_public_key'       => array(
-				'title'       => __( 'Llave pública de prueba', 'wompi-moshipp' ),
-				'type'        => 'text',
-				'placeholder' => 'pub_test_…',
-			),
-			'test_private_key'      => array(
-				'title'       => __( 'Llave privada de prueba', 'wompi-moshipp' ),
-				'type'        => 'password',
-				'placeholder' => 'prv_test_…',
-			),
-			'test_integrity_secret' => array(
-				'title'       => __( 'Secreto de integridad de prueba', 'wompi-moshipp' ),
-				'type'        => 'password',
-				'placeholder' => 'test_integrity_…',
-			),
-			'test_events_secret'    => array(
-				'title'       => __( 'Secreto de eventos de prueba', 'wompi-moshipp' ),
-				'type'        => 'password',
-				'placeholder' => 'test_events_…',
-			),
-			'prod_public_key'       => array(
-				'title'       => __( 'Llave pública de producción', 'wompi-moshipp' ),
-				'type'        => 'text',
-				'placeholder' => 'pub_prod_…',
-			),
-			'prod_private_key'      => array(
-				'title'       => __( 'Llave privada de producción', 'wompi-moshipp' ),
-				'type'        => 'password',
-				'placeholder' => 'prv_prod_…',
-			),
-			'prod_integrity_secret' => array(
-				'title'       => __( 'Secreto de integridad de producción', 'wompi-moshipp' ),
-				'type'        => 'password',
-				'placeholder' => 'prod_integrity_…',
-			),
-			'prod_events_secret'    => array(
-				'title'       => __( 'Secreto de eventos de producción', 'wompi-moshipp' ),
-				'type'        => 'password',
-				'placeholder' => 'prod_events_…',
-			),
-			'logging'               => array(
-				'title'   => __( 'Registro de depuración', 'wompi-moshipp' ),
-				'type'    => 'checkbox',
-				'label'   => __( 'Guardar log de llamadas al API (WooCommerce → Estado → Logs, fuente wompi-moshipp)', 'wompi-moshipp' ),
-				'default' => 'no',
-			),
-			'fees_section'          => array(
-				'title'       => __( 'Comisiones de Wompi (para estimación en las órdenes)', 'wompi-moshipp' ),
-				'type'        => 'title',
-				'description' => __( 'El API de Wompi no reporta la comisión cobrada; con tu tarifa negociada el plugin muestra en cada orden una comisión y un neto estimados. Déjalo vacío si no quieres ver la estimación.', 'wompi-moshipp' ),
-			),
-			'fee_percent'           => array(
-				'title'       => __( 'Comisión variable (%)', 'wompi-moshipp' ),
-				'type'        => 'text',
-				'default'     => '2.65',
-				'placeholder' => '2.65',
-				'description' => __( 'Porcentaje sobre el valor de la transacción.', 'wompi-moshipp' ),
-			),
-			'fee_fixed'             => array(
-				'title'       => __( 'Comisión fija (COP)', 'wompi-moshipp' ),
-				'type'        => 'text',
-				'default'     => '700',
-				'placeholder' => '700',
-			),
-			'fee_iva'               => array(
-				'title'       => __( 'IVA sobre la comisión (%)', 'wompi-moshipp' ),
-				'type'        => 'text',
-				'default'     => '19',
-				'placeholder' => '19',
-			),
-			'webhook_url'           => array(
-				'title' => __( 'URL de eventos (webhook)', 'wompi-moshipp' ),
-				'type'  => 'wompi_webhook',
+				'description' => sprintf(
+					/* translators: %s: URL de la página central de ajustes. */
+					__( 'Las llaves, comisiones, webhook y activación se configuran una sola vez para ambos métodos en <a href="%s"><strong>WooCommerce → Wompi</strong></a>. Aquí solo personalizas lo que ve el cliente.', 'wompi-moshipp' ),
+					esc_url( Wompi_MP_Settings_Page::url() )
+				),
 			),
 		);
-	}
-
-	/**
-	 * Campo personalizado: URL del webhook con botón de copiar.
-	 */
-	public function generate_wompi_webhook_html( $key, $data ) {
-		$url = Wompi_MP_Webhook::url();
-		ob_start();
-		?>
-		<tr valign="top">
-			<th scope="row" class="titledesc">
-				<label><?php echo esc_html( $data['title'] ); ?></label>
-			</th>
-			<td class="forminp">
-				<div class="wompi-mp-webhook-box">
-					<code><?php echo esc_html( $url ); ?></code>
-					<button type="button" class="button" data-wompi-copy="<?php echo esc_attr( $url ); ?>"><?php esc_html_e( 'Copiar', 'wompi-moshipp' ); ?></button>
-					<span class="wompi-mp-copy-done" style="display:none"><?php esc_html_e( '¡Copiada!', 'wompi-moshipp' ); ?></span>
-				</div>
-				<p class="description"><?php esc_html_e( 'Regístrala como "URL de eventos" en el dashboard de Wompi, una vez en el ambiente de pruebas y otra en producción. Sin esto, las órdenes solo se confirman por el polling de la página de gracias.', 'wompi-moshipp' ); ?></p>
-			</td>
-		</tr>
-		<?php
-		return ob_get_clean();
 	}
 
 	/**
@@ -256,6 +143,7 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 						<span class="wompi-mp-badge wompi-mp-badge-prod"><?php esc_html_e( 'Producción', 'wompi-moshipp' ); ?></span>
 					<?php endif; ?>
 				</span>
+				<a class="button" href="<?php echo esc_url( Wompi_MP_Settings_Page::url() ); ?>"><?php esc_html_e( 'Configurar credenciales Wompi', 'wompi-moshipp' ); ?></a>
 				<button type="button" class="button" id="wompi-mp-check"><?php esc_html_e( 'Verificar conexión con Wompi', 'wompi-moshipp' ); ?></button>
 				<span class="wompi-mp-check-result" id="wompi-mp-check-result"></span>
 			</div>
