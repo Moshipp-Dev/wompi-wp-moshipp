@@ -1,0 +1,229 @@
+/* ---------- Campos de pago (checkout clásico y por bloques) ---------- */
+
+.wompi-mp-fields {
+	--wompi-mp-accent: #6329f3;
+	--wompi-mp-accent-2: #a06af9;
+	--wompi-mp-ink: #3f3f46;
+	--wompi-mp-line: #e4e4e7;
+	position: relative;
+	margin: 0.6em 0 0.2em;
+	padding: 1.15em 1.25em 1.25em;
+	border: 1px solid var(--wompi-mp-line);
+	border-radius: 14px;
+	background: #fff;
+	box-shadow: 0 1px 2px rgba(24, 24, 27, 0.04), 0 4px 14px rgba(24, 24, 27, 0.04);
+	overflow: hidden;
+}
+
+.wompi-mp-fields::before {
+	content: "";
+	position: absolute;
+	inset: 0 0 auto 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--wompi-mp-accent), var(--wompi-mp-accent-2));
+}
+
+.wompi-mp-nequi {
+	--wompi-mp-accent: #da0081;
+	--wompi-mp-accent-2: #4d1259;
+}
+
+.wompi-mp-daviplata {
+	--wompi-mp-accent: #ed1c27;
+	--wompi-mp-accent-2: #b3131c;
+}
+
+.wompi-mp-fields .wompi-mp-desc {
+	margin: 0.1em 0 1em;
+	color: var(--wompi-mp-ink);
+	font-size: 0.95em;
+	line-height: 1.5;
+}
+
+.wompi-mp-field {
+	margin: 0 0 1em !important;
+	padding: 0 !important;
+}
+
+.wompi-mp-field label {
+	display: block;
+	margin-bottom: 0.4em;
+	font-size: 0.82em;
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: #71717a;
+}
+
+.wompi-mp-field label .required {
+	color: var(--wompi-mp-accent);
+	text-decoration: none;
+}
+
+.wompi-mp-fields input[type="tel"],
+.wompi-mp-fields input[type="text"],
+.wompi-mp-fields select {
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.72em 0.9em;
+	font-size: 1em;
+	line-height: 1.4;
+	color: #18181b;
+	background: #fafafa;
+	border: 1.5px solid #d4d4d8;
+	border-radius: 10px;
+	outline: none;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.wompi-mp-fields select {
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%2371717a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M1 1.5 6 6.5 11 1.5'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 0.9em center;
+	padding-right: 2.4em;
+}
+
+.wompi-mp-fields input:focus,
+.wompi-mp-fields select:focus {
+	background: #fff;
+	border-color: var(--wompi-mp-accent);
+	box-shadow: 0 0 0 3px color-mix(in srgb, var(--wompi-mp-accent) 16%, transparent);
+}
+
+.wompi-mp-cols {
+	display: grid;
+	grid-template-columns: minmax(0, 4fr) minmax(0, 6fr);
+	gap: 0.9em;
+}
+
+@media (max-width: 520px) {
+	.wompi-mp-cols {
+		grid-template-columns: 1fr;
+		gap: 0;
+	}
+}
+
+/* ---------- Checkbox de aceptación ---------- */
+
+.wompi-mp-acceptance {
+	display: block;
+	margin: 0.2em 0 0 !important;
+	padding: 0.75em 0.9em !important;
+	background: #fafafa;
+	border: 1px dashed #d4d4d8;
+	border-radius: 10px;
+	font-size: 0.85em;
+	line-height: 1.5;
+	color: #52525b;
+}
+
+.wompi-mp-acceptance label {
+	display: flex !important;
+	align-items: flex-start;
+	gap: 0.6em;
+	margin: 0;
+	cursor: pointer;
+	font-weight: 400;
+	text-transform: none;
+}
+
+.wompi-mp-acceptance input[type="checkbox"] {
+	flex: 0 0 auto;
+	width: 1.15em;
+	height: 1.15em;
+	margin: 0.15em 0 0;
+	accent-color: var(--wompi-mp-accent, #6329f3);
+	cursor: pointer;
+}
+
+.wompi-mp-acceptance a {
+	color: var(--wompi-mp-accent, #6329f3);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.wompi-mp-acceptance .required {
+	color: var(--wompi-mp-accent, #6329f3);
+	text-decoration: none;
+}
+
+/* ---------- Marca del desarrollador ---------- */
+
+.wompi-mp-brand {
+	margin: 0.7em 0 0 !important;
+	text-align: right;
+	font-size: 0.72em;
+	letter-spacing: 0.02em;
+	color: #a1a1aa;
+}
+
+.wompi-mp-brand a.wompi-mp-brand-link {
+	color: #a1a1aa;
+	font-weight: 600;
+	text-decoration: none;
+	border-bottom: 1px dotted currentColor;
+}
+
+.wompi-mp-brand a.wompi-mp-brand-link:hover {
+	color: var(--wompi-mp-accent, #6329f3);
+}
+
+/* ---------- Pantalla de espera / resultado en la página de gracias ---------- */
+
+.wompi-mp-wait {
+	margin: 1.5em 0;
+	padding: 2em 1.5em;
+	border: 1px solid #e4e4e7;
+	border-radius: 16px;
+	text-align: center;
+	background: linear-gradient(180deg, #fafafa, #fff);
+	box-shadow: 0 1px 2px rgba(24, 24, 27, 0.04), 0 6px 18px rgba(24, 24, 27, 0.05);
+}
+
+.wompi-mp-wait-msg {
+	font-size: 1.15em;
+	font-weight: 650;
+	margin: 0.8em 0 0.3em;
+	color: #18181b;
+}
+
+.wompi-mp-wait-sub {
+	color: #71717a;
+	font-size: 0.92em;
+	margin: 0;
+}
+
+.wompi-mp-failed {
+	border-color: #fecaca;
+	background: linear-gradient(180deg, #fef2f2, #fff);
+}
+
+.wompi-mp-failed p:first-child {
+	font-weight: 650;
+	color: #b91c1c;
+}
+
+.wompi-mp-spinner {
+	display: inline-block;
+	width: 34px;
+	height: 34px;
+	border: 3px solid #e4e4e7;
+	border-top-color: #6329f3;
+	border-radius: 50%;
+	animation: wompi-mp-spin 0.8s linear infinite;
+}
+
+@keyframes wompi-mp-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/*
+ * Sin media query de modo oscuro a propósito: la preferencia del sistema no
+ * refleja los colores del tema de WordPress. La tarjeta es autocontenida
+ * (fondos y textos explícitos), legible sobre temas claros y oscuros.
+ */

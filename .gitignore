@@ -1,0 +1,16 @@
+# Documento de trabajo interno (no se publica)
+PLAN.md
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Dependencias / builds
+node_modules/
+vendor/
+*.zip
+
+# Entornos locales
+.env
+.env.*
+wp-env.json

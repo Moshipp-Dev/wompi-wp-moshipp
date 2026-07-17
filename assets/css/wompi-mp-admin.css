@@ -1,0 +1,254 @@
+/* ---------- Pantalla de ajustes de los gateways Wompi ---------- */
+
+.wompi-mp-admin-hero {
+	--wompi-mp-accent: #6329f3;
+	--wompi-mp-accent-2: #a06af9;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1em 2em;
+	margin: 1.2em 0 1.5em;
+	padding: 1.5em 1.8em;
+	border-radius: 16px;
+	background:
+		radial-gradient(1200px 300px at 0% 0%, rgba(255, 255, 255, 0.14), transparent 60%),
+		linear-gradient(120deg, var(--wompi-mp-accent), var(--wompi-mp-accent-2));
+	color: #fff;
+	box-shadow: 0 8px 24px rgba(24, 24, 27, 0.18);
+}
+
+.wompi-mp-hero-nequi {
+	--wompi-mp-accent: #2c0f38;
+	--wompi-mp-accent-2: #da0081;
+}
+
+.wompi-mp-hero-daviplata {
+	--wompi-mp-accent: #7f0d13;
+	--wompi-mp-accent-2: #ed1c27;
+}
+
+.wompi-mp-admin-hero h2 {
+	margin: 0 0 0.2em;
+	color: #fff;
+	font-size: 1.5em;
+	font-weight: 700;
+	padding: 0;
+}
+
+.wompi-mp-admin-hero .wompi-mp-hero-desc {
+	margin: 0;
+	max-width: 46em;
+	color: rgba(255, 255, 255, 0.85);
+	font-size: 0.95em;
+}
+
+.wompi-mp-brand-admin {
+	display: inline-block;
+	margin-top: 0.6em;
+	font-size: 0.82em;
+	color: rgba(255, 255, 255, 0.75);
+}
+
+.wompi-mp-brand-admin a {
+	color: #fff;
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.wompi-mp-hero-meta {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 0.55em;
+}
+
+.wompi-mp-badges {
+	display: flex;
+	gap: 0.5em;
+}
+
+.wompi-mp-badge {
+	display: inline-block;
+	padding: 0.25em 0.8em;
+	border-radius: 999px;
+	font-size: 0.78em;
+	font-weight: 600;
+	letter-spacing: 0.03em;
+	background: rgba(255, 255, 255, 0.18);
+	border: 1px solid rgba(255, 255, 255, 0.35);
+	color: #fff;
+}
+
+.wompi-mp-badge-test {
+	background: #f59e0b;
+	border-color: #f59e0b;
+	color: #1c1917;
+}
+
+.wompi-mp-badge-prod {
+	background: #22c55e;
+	border-color: #22c55e;
+	color: #052e16;
+}
+
+/* El .button azul del admin no contrasta sobre el degradado del hero:
+   estilo propio translúcido con texto blanco (especificidad > .wp-core-ui). */
+.wp-core-ui .wompi-mp-admin-hero .button {
+	background: rgba(255, 255, 255, 0.16);
+	border: 1px solid rgba(255, 255, 255, 0.6);
+	color: #fff;
+	border-radius: 999px;
+	padding: 0.15em 1.2em;
+	font-weight: 600;
+	box-shadow: none;
+	text-shadow: none;
+	transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.wp-core-ui .wompi-mp-admin-hero .button:hover,
+.wp-core-ui .wompi-mp-admin-hero .button:focus {
+	background: rgba(255, 255, 255, 0.3);
+	border-color: #fff;
+	color: #fff;
+	box-shadow: none;
+	outline: none;
+}
+
+.wp-core-ui .wompi-mp-admin-hero .button:disabled,
+.wp-core-ui .wompi-mp-admin-hero .button[disabled] {
+	background: rgba(255, 255, 255, 0.1) !important;
+	border-color: rgba(255, 255, 255, 0.35) !important;
+	color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.wompi-mp-check-result {
+	font-size: 0.85em;
+	max-width: 22em;
+	text-align: right;
+	line-height: 1.45;
+}
+
+.wompi-mp-check-result .ok {
+	color: #bbf7d0;
+	font-weight: 600;
+}
+
+.wompi-mp-check-result .fail {
+	color: #fecaca;
+	font-weight: 600;
+}
+
+/* ---------- Cuerpo del formulario ---------- */
+
+.wompi-mp-admin-body h3.wc-settings-sub-title,
+.wompi-mp-admin-body h3 {
+	margin: 2em 0 0.4em;
+	padding: 0 0 0 0.7em;
+	border-left: 4px solid var(--wompi-mp-admin-accent, #6329f3);
+	font-size: 1.05em;
+}
+
+.wompi-mp-admin-body h3 + p {
+	margin-top: 0.2em;
+	color: #646970;
+}
+
+.wompi-mp-admin-body .form-table {
+	background: #fff;
+	border: 1px solid #e2e2e5;
+	border-radius: 12px;
+	padding: 1.1em 1.8em;
+	margin-top: 0.8em;
+	box-sizing: border-box;
+	/* WP usa border-collapse: collapse, y una tabla colapsada IGNORA su propio
+	   padding. Con separate el padding de la tarjeta sí aplica. */
+	border-collapse: separate;
+	border-spacing: 0;
+	width: 100%;
+}
+
+.wompi-mp-admin-body .form-table th,
+.wompi-mp-admin-body .form-table td {
+	padding-top: 0.9em;
+	padding-bottom: 0.9em;
+}
+
+.wompi-mp-admin-body .form-table th {
+	font-weight: 600;
+	color: #3c434a;
+	padding-right: 1.5em;
+}
+
+/* En pantallas angostas WP colapsa th/td a bloques y les quita el padding:
+   mantener el respiro dentro de la tarjeta. */
+@media screen and (max-width: 782px) {
+	.wompi-mp-admin-body .form-table {
+		padding: 1em 1.3em;
+	}
+
+	.wompi-mp-admin-body .form-table th,
+	.wompi-mp-admin-body .form-table td {
+		padding: 0.6em 0.15em;
+	}
+
+	.wompi-mp-admin-body .form-table td {
+		padding-top: 0.15em;
+		padding-bottom: 1em;
+	}
+}
+
+.wompi-mp-admin-body .form-table input[type="text"],
+.wompi-mp-admin-body .form-table input[type="password"],
+.wompi-mp-admin-body .form-table textarea {
+	width: 400px;
+	max-width: 100%;
+	padding: 0.5em 0.75em;
+	border-radius: 8px;
+	border: 1.5px solid #c3c4c7;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wompi-mp-admin-body .form-table input:focus,
+.wompi-mp-admin-body .form-table textarea:focus {
+	border-color: var(--wompi-mp-admin-accent, #6329f3);
+	box-shadow: 0 0 0 2px color-mix(in srgb, var(--wompi-mp-admin-accent, #6329f3) 20%, transparent);
+	outline: none;
+}
+
+.wompi-mp-admin-nequi {
+	--wompi-mp-admin-accent: #da0081;
+}
+
+.wompi-mp-admin-daviplata {
+	--wompi-mp-admin-accent: #ed1c27;
+}
+
+/* ---------- Caja de la URL del webhook ---------- */
+
+.wompi-mp-webhook-box {
+	display: flex;
+	align-items: center;
+	gap: 0.6em;
+	flex-wrap: wrap;
+}
+
+.wompi-mp-webhook-box code {
+	padding: 0.55em 0.9em;
+	background: #f0f0f1;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	font-size: 0.95em;
+	user-select: all;
+}
+
+.wompi-mp-webhook-box .button {
+	border-radius: 8px;
+}
+
+.wompi-mp-copy-done {
+	color: #00a32a;
+	font-weight: 600;
+	font-size: 0.85em;
+}
