@@ -1,6 +1,6 @@
-# Wompi Pagos — Nequi y Daviplata para WooCommerce
+# Wompi Pagos — Nequi, Daviplata y PSE para WooCommerce
 
-Plugin de WordPress/WooCommerce para aceptar pagos en Colombia con **Nequi (notificación push)** y **Daviplata (OTP)** a través del API de [Wompi](https://wompi.co), sin sacar al cliente de la tienda.
+Plugin de WordPress/WooCommerce para aceptar pagos en Colombia con **Nequi (notificación push)**, **Daviplata (OTP)** y **PSE (débito bancario)** a través del API de [Wompi](https://wompi.co), sin sacar al cliente de la tienda.
 
 Desarrollado por [Moshipp](https://moshipp.com/desarrollo-web).
 
@@ -8,10 +8,14 @@ Desarrollado por [Moshipp](https://moshipp.com/desarrollo-web).
 
 - **Nequi push**: el cliente ingresa su celular en el checkout, aprueba en su app y la tienda confirma en segundos — sin redirecciones.
 - **Daviplata (flujo hosted)**: el cliente ingresa su documento, confirma el código OTP en la página segura de Wompi y regresa a la tienda.
+- **PSE**: el cliente elige su banco (lista en vivo del API), autoriza en el portal bancario y regresa a la tienda.
 - Compatible con el **checkout clásico (shortcode)** y el **checkout por bloques** de WooCommerce.
 - Compatible con **HPOS** (High-Performance Order Storage).
 - **Webhooks firmados** (checksum SHA-256) como fuente de verdad, con polling de respaldo en la página de gracias.
-- Panel **"Pago Wompi"** en cada orden: estado, método, IDs de transacción, fechas, monto, y **comisión/neto estimados** según tu tarifa configurada.
+- Panel **"Pago Wompi"** en cada orden, columna de estado en el listado de pedidos y **comisión/neto estimados** en los totales.
+- **Reconciliación automática** cada 15 minutos de órdenes pendientes (cubre webhooks perdidos).
+- **Actualizaciones automáticas** desde GitHub Releases.
+- Email opcional al cliente con instrucciones cuando el pago queda pendiente.
 - Pantalla de ajustes con verificación de credenciales en vivo contra el API y URL de webhook con copiado a un clic.
 - Credenciales compartidas entre ambos métodos (se configuran una sola vez), modo sandbox/producción y log de depuración opcional.
 - Checkbox de aceptación del reglamento y la autorización de tratamiento de datos de Wompi (requisito regulatorio colombiano), con tokens de aceptación frescos por transacción.

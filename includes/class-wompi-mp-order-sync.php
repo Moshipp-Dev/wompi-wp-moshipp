@@ -70,7 +70,7 @@ class Wompi_MP_Order_Sync {
 
 		$gateways = WC()->payment_gateways()->payment_gateways();
 		$gateway  = null;
-		foreach ( array( 'wompi_daviplata', 'wompi_nequi' ) as $id ) {
+		foreach ( array( 'wompi_daviplata', 'wompi_pse', 'wompi_nequi' ) as $id ) {
 			if ( isset( $gateways[ $id ] ) && $gateways[ $id ] instanceof Wompi_MP_Gateway ) {
 				$gateway = $gateways[ $id ];
 				break;
@@ -105,7 +105,7 @@ class Wompi_MP_Order_Sync {
 	}
 
 	public static function is_wompi_order( WC_Order $order ): bool {
-		return in_array( $order->get_payment_method(), array( 'wompi_nequi', 'wompi_daviplata' ), true );
+		return in_array( $order->get_payment_method(), array( 'wompi_nequi', 'wompi_daviplata', 'wompi_pse' ), true );
 	}
 
 	/**
@@ -167,7 +167,7 @@ class Wompi_MP_Order_Sync {
 		$detail = '';
 		if ( 'NEQUI' === $type ) {
 			$detail = (string) ( $pm['phone_number'] ?? '' );
-		} elseif ( 'DAVIPLATA' === $type ) {
+		} elseif ( 'DAVIPLATA' === $type || 'PSE' === $type ) {
 			$detail = trim( (string) ( $pm['user_legal_id_type'] ?? '' ) . ' ' . (string) ( $pm['user_legal_id'] ?? '' ) );
 		}
 		return array(

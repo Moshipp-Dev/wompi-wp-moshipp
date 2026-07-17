@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Empaquetar el plugin
+        run: |
+          mkdir -p build/wompi-wp-moshipp
+          rsync -a \
+            --exclude='.git*' \
+            --exclude='.github' \
+            --exclude='PLAN.md' \
+            --exclude='build' \
+            --exclude='*.zip' \
+            ./ build/wompi-wp-moshipp/
+          cd build && zip -rq ../wompi-wp-moshipp.zip wompi-wp-moshipp
+
+      - name: Crear el release con el zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" wompi-wp-moshipp.zip \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes

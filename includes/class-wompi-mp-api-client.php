@@ -127,6 +127,28 @@ class Wompi_MP_API_Client {
 	}
 
 	/**
+	 * Bancos disponibles para PSE. Cacheados por ambiente (cambian poco).
+	 *
+	 * @return array<array{financial_institution_code:string,financial_institution_name:string}>|WP_Error
+	 */
+	public function get_pse_financial_institutions() {
+		$cache_key = 'wompi_mp_pse_banks_' . ( $this->testmode ? 'test' : 'prod' );
+		$cached    = get_transient( $cache_key );
+		if ( is_array( $cached ) && $cached ) {
+			return $cached;
+		}
+		$response = $this->request( 'GET', '/pse/financial_institutions', null, $this->public_key );
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+		$banks = is_array( $response['data'] ?? null ) ? $response['data'] : array();
+		if ( $banks ) {
+			set_transient( $cache_key, $banks, 6 * HOUR_IN_SECONDS );
+		}
+		return $banks;
+	}
+
+	/**
 	 * Consulta una transacción por ID.
 	 *
 	 * @return array|WP_Error Cuerpo 'data' de la transacción.

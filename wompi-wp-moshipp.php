@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Wompi Pagos — Nequi y Daviplata
- * Description: Acepta pagos con Nequi (notificación push) y Daviplata a través de Wompi Colombia. Compatible con el checkout clásico y el checkout por bloques de WooCommerce, y con HPOS.
- * Version: 0.4.0
+ * Plugin Name: Wompi Pagos — Nequi, Daviplata y PSE
+ * Description: Acepta pagos con Nequi (notificación push), Daviplata y PSE a través de Wompi Colombia. Compatible con el checkout clásico y el checkout por bloques de WooCommerce, y con HPOS.
+ * Version: 0.5.0
  * Author: Moshipp
  * Text Domain: wompi-moshipp
  * Domain Path: /languages
@@ -13,11 +13,12 @@
  * WC tested up to: 11.0
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ * Update URI: https://github.com/Moshipp-Dev/wompi-wp-moshipp
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WOMPI_MP_VERSION', '0.4.0' );
+define( 'WOMPI_MP_VERSION', '0.5.0' );
 define( 'WOMPI_MP_PLUGIN_FILE', __FILE__ );
 define( 'WOMPI_MP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WOMPI_MP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -97,11 +98,13 @@ function wompi_mp_init() {
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/abstract-wompi-mp-gateway.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-gateway-nequi.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-gateway-daviplata.php';
+	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-gateway-pse.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-webhook.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-admin-order.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-settings-page.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-reconciler.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-emails.php';
+	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-updater.php';
 
 	add_filter( 'woocommerce_payment_gateways', 'wompi_mp_register_gateways' );
 	add_action( 'wp_enqueue_scripts', 'wompi_mp_enqueue_checkout_styles' );
@@ -113,6 +116,7 @@ function wompi_mp_init() {
 	Wompi_MP_Admin_Order::init();
 	Wompi_MP_Settings_Page::init();
 	Wompi_MP_Reconciler::init();
+	Wompi_MP_Updater::init();
 }
 
 register_deactivation_hook(
@@ -132,7 +136,7 @@ register_deactivation_hook(
 function wompi_mp_enqueue_admin_assets( $hook ) {
 	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- solo lectura para decidir si encolar assets.
 	$section         = sanitize_key( wp_unslash( $_GET['section'] ?? '' ) );
-	$is_gateway_page = 'woocommerce_page_wc-settings' === $hook && in_array( $section, array( 'wompi_nequi', 'wompi_daviplata' ), true );
+	$is_gateway_page = 'woocommerce_page_wc-settings' === $hook && in_array( $section, array( 'wompi_nequi', 'wompi_daviplata', 'wompi_pse' ), true );
 	$is_central_page = 'woocommerce_page_' . Wompi_MP_Settings_Page::SLUG === $hook;
 	if ( ! $is_gateway_page && ! $is_central_page ) {
 		return;
@@ -176,6 +180,7 @@ function wompi_mp_missing_wc_notice() {
 function wompi_mp_register_gateways( $gateways ) {
 	$gateways[] = 'Wompi_MP_Gateway_Nequi';
 	$gateways[] = 'Wompi_MP_Gateway_Daviplata';
+	$gateways[] = 'Wompi_MP_Gateway_PSE';
 	return $gateways;
 }
 
@@ -191,5 +196,6 @@ add_action(
 		require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-blocks-support.php';
 		$registry->register( new Wompi_MP_Blocks_Support( 'wompi_nequi' ) );
 		$registry->register( new Wompi_MP_Blocks_Support( 'wompi_daviplata' ) );
+		$registry->register( new Wompi_MP_Blocks_Support( 'wompi_pse' ) );
 	}
 );

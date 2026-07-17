@@ -278,4 +278,170 @@
 			},
 		} );
 	}
+
+	/* ------------------------------- PSE ------------------------------- */
+
+	var pseSettings = getSetting( 'wompi_pse_data', null );
+
+	if ( pseSettings ) {
+		var PseContent = function ( props ) {
+			var bankState = useState( '' );
+			var bank = bankState[ 0 ];
+			var setBank = bankState[ 1 ];
+			var userTypeState = useState( '0' );
+			var userType = userTypeState[ 0 ];
+			var setUserType = userTypeState[ 1 ];
+			var typeState = useState( 'CC' );
+			var docType = typeState[ 0 ];
+			var setDocType = typeState[ 1 ];
+			var numberState = useState( '' );
+			var docNumber = numberState[ 0 ];
+			var setDocNumber = numberState[ 1 ];
+			var acceptState = useState( false );
+			var accepted = acceptState[ 0 ];
+			var setAccepted = acceptState[ 1 ];
+
+			useSetupHandler( props, function ( emitResponse ) {
+				var clean = docNumber.replace( /\D/g, '' );
+				if ( ! bank || ! /^\d{4,15}$/.test( clean ) ) {
+					return {
+						type: emitResponse.responseTypes.ERROR,
+						message: pseSettings.i18n.bankInvalid,
+					};
+				}
+				if ( ! accepted ) {
+					return {
+						type: emitResponse.responseTypes.ERROR,
+						message: pseSettings.i18n.acceptRequired,
+					};
+				}
+				return {
+					type: emitResponse.responseTypes.SUCCESS,
+					meta: {
+						paymentMethodData: {
+							wompi_mp_pse_bank: bank,
+							wompi_mp_user_type: userType,
+							wompi_mp_doc_type: docType,
+							wompi_mp_doc_number: clean,
+							wompi_mp_accept: '1',
+						},
+					},
+				};
+			} );
+
+			var bankOptions = [ el( 'option', { key: '', value: '' }, pseSettings.i18n.bankPlaceholder ) ];
+			( pseSettings.banks || [] ).forEach( function ( b ) {
+				bankOptions.push(
+					el( 'option', { key: b.financial_institution_code, value: b.financial_institution_code }, b.financial_institution_name )
+				);
+			} );
+
+			var userTypeOptions = [];
+			Object.keys( pseSettings.userTypes || {} ).forEach( function ( code ) {
+				userTypeOptions.push( el( 'option', { key: code, value: code }, pseSettings.userTypes[ code ] ) );
+			} );
+
+			var docTypeOptions = [];
+			Object.keys( pseSettings.docTypes || {} ).forEach( function ( code ) {
+				docTypeOptions.push( el( 'option', { key: code, value: code }, pseSettings.docTypes[ code ] ) );
+			} );
+
+			return el(
+				'div',
+				{ className: 'wompi-mp-fields wompi-mp-pse' },
+				pseSettings.description
+					? el( 'p', { className: 'wompi-mp-desc' }, decodeEntities( pseSettings.description ) )
+					: null,
+				el(
+					'p',
+					{ className: 'wompi-mp-field' },
+					el( 'label', { htmlFor: 'wompi-mp-blocks-bank' }, pseSettings.i18n.bankLabel + ' *' ),
+					el(
+						'select',
+						{
+							id: 'wompi-mp-blocks-bank',
+							value: bank,
+							onChange: function ( e ) {
+								setBank( e.target.value );
+							},
+						},
+						bankOptions
+					)
+				),
+				el(
+					'p',
+					{ className: 'wompi-mp-field' },
+					el( 'label', { htmlFor: 'wompi-mp-blocks-user-type' }, pseSettings.i18n.userTypeLabel + ' *' ),
+					el(
+						'select',
+						{
+							id: 'wompi-mp-blocks-user-type',
+							value: userType,
+							onChange: function ( e ) {
+								setUserType( e.target.value );
+							},
+						},
+						userTypeOptions
+					)
+				),
+				el(
+					'div',
+					{ className: 'wompi-mp-cols' },
+					el(
+						'p',
+						{ className: 'wompi-mp-field' },
+						el( 'label', { htmlFor: 'wompi-mp-blocks-pse-doc-type' }, pseSettings.i18n.docTypeLabel + ' *' ),
+						el(
+							'select',
+							{
+								id: 'wompi-mp-blocks-pse-doc-type',
+								value: docType,
+								onChange: function ( e ) {
+									setDocType( e.target.value );
+								},
+							},
+							docTypeOptions
+						)
+					),
+					el(
+						'p',
+						{ className: 'wompi-mp-field' },
+						el( 'label', { htmlFor: 'wompi-mp-blocks-pse-doc-number' }, pseSettings.i18n.docNumberLabel + ' *' ),
+						el( 'input', {
+							id: 'wompi-mp-blocks-pse-doc-number',
+							type: 'text',
+							inputMode: 'numeric',
+							maxLength: 15,
+							value: docNumber,
+							onChange: function ( e ) {
+								setDocNumber( e.target.value );
+							},
+						} )
+					)
+				),
+				el( AcceptanceCheckbox, {
+					settings: pseSettings,
+					checked: accepted,
+					onChange: setAccepted,
+				} ),
+				pseSettings.brandHtml
+					? el( 'div', { dangerouslySetInnerHTML: { __html: pseSettings.brandHtml } } )
+					: null
+			);
+		};
+
+		registerPaymentMethod( {
+			name: 'wompi_pse',
+			label: methodLabel( pseSettings, 'PSE' ),
+			ariaLabel: decodeEntities( pseSettings.title || 'PSE' ),
+			content: el( PseContent, null ),
+			edit: el( 'div', null, decodeEntities( pseSettings.title || 'PSE' ) ),
+			canMakePayment: function () {
+				return true;
+			},
+			supports: {
+				features: pseSettings.supports || [ 'products' ],
+			},
+		} );
+	}
 } )();

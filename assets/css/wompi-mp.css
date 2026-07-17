@@ -33,6 +33,11 @@
 	--wompi-mp-accent-2: #b3131c;
 }
 
+.wompi-mp-pse {
+	--wompi-mp-accent: #19477d;
+	--wompi-mp-accent-2: #2c67ac;
+}
+
 .wompi-mp-fields .wompi-mp-desc {
 	margin: 0.1em 0 1em;
 	color: var(--wompi-mp-ink);
@@ -153,7 +158,8 @@
 /* ---------- Logos de los métodos en el checkout clásico ---------- */
 
 li.payment_method_wompi_nequi > label > img,
-li.payment_method_wompi_daviplata > label > img {
+li.payment_method_wompi_daviplata > label > img,
+li.payment_method_wompi_pse > label > img {
 	max-height: 24px;
 	width: auto;
 	display: inline-block;

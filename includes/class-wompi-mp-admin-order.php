@@ -173,7 +173,12 @@ class Wompi_MP_Admin_Order {
 		$env    = (string) $order->get_meta( Wompi_MP_Order_Sync::META_ENV );
 		$amount = (int) ( $snapshot['amount_in_cents'] ?? 0 );
 
-		$method_label = 'DAVIPLATA' === ( $snapshot['type'] ?? '' ) ? 'Daviplata' : 'Nequi';
+		$method_names = array(
+			'NEQUI'     => 'Nequi',
+			'DAVIPLATA' => 'Daviplata',
+			'PSE'       => 'PSE',
+		);
+		$method_label = $method_names[ $snapshot['type'] ?? '' ] ?? 'Wompi';
 		if ( ! empty( $snapshot['detail'] ) ) {
 			$method_label .= ' · ' . $snapshot['detail'];
 		}

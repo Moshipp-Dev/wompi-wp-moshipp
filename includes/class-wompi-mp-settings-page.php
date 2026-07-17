@@ -22,7 +22,7 @@ class Wompi_MP_Settings_Page {
 	public static function register_menu(): void {
 		add_submenu_page(
 			'woocommerce',
-			__( 'Wompi — Nequi y Daviplata', 'wompi-moshipp' ),
+			__( 'Wompi — Nequi, Daviplata y PSE', 'wompi-moshipp' ),
 			__( 'Wompi', 'wompi-moshipp' ),
 			'manage_woocommerce',
 			self::SLUG,
@@ -94,6 +94,7 @@ class Wompi_MP_Settings_Page {
 
 		self::set_gateway_enabled( 'wompi_nequi', ! empty( $_POST['enable_nequi'] ) );
 		self::set_gateway_enabled( 'wompi_daviplata', ! empty( $_POST['enable_daviplata'] ) );
+		self::set_gateway_enabled( 'wompi_pse', ! empty( $_POST['enable_pse'] ) );
 
 		wp_safe_redirect( add_query_arg( 'updated', '1', self::url() ) );
 		exit;
@@ -146,8 +147,8 @@ class Wompi_MP_Settings_Page {
 
 			<div class="wompi-mp-admin-hero">
 				<div>
-					<h2><?php esc_html_e( 'Wompi — Nequi y Daviplata', 'wompi-moshipp' ); ?></h2>
-					<p class="wompi-mp-hero-desc"><?php esc_html_e( 'Configura aquí las credenciales una sola vez: aplican para ambos métodos de pago.', 'wompi-moshipp' ); ?></p>
+					<h2><?php esc_html_e( 'Wompi — Nequi, Daviplata y PSE', 'wompi-moshipp' ); ?></h2>
+					<p class="wompi-mp-hero-desc"><?php esc_html_e( 'Configura aquí las credenciales una sola vez: aplican para todos los métodos de pago.', 'wompi-moshipp' ); ?></p>
 					<?php echo function_exists( 'wompi_mp_brand_html' ) ? wp_kses_post( wompi_mp_brand_html() ) : ''; ?>
 				</div>
 				<div class="wompi-mp-hero-meta">
@@ -174,6 +175,7 @@ class Wompi_MP_Settings_Page {
 					<?php
 					self::checkbox_field( 'enable_nequi', __( 'Nequi', 'wompi-moshipp' ), __( 'Aceptar pagos con Nequi (notificación push)', 'wompi-moshipp' ), self::gateway_enabled( 'wompi_nequi' ) );
 					self::checkbox_field( 'enable_daviplata', __( 'Daviplata', 'wompi-moshipp' ), __( 'Aceptar pagos con Daviplata (código OTP)', 'wompi-moshipp' ), self::gateway_enabled( 'wompi_daviplata' ) );
+					self::checkbox_field( 'enable_pse', __( 'PSE', 'wompi-moshipp' ), __( 'Aceptar pagos con PSE (débito bancario)', 'wompi-moshipp' ), self::gateway_enabled( 'wompi_pse' ) );
 					self::checkbox_field( 'testmode', __( 'Modo de prueba', 'wompi-moshipp' ), __( 'Usar el ambiente sandbox de Wompi (transacciones simuladas)', 'wompi-moshipp' ), $is_test );
 					?>
 				</table>
