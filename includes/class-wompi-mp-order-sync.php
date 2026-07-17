@@ -230,6 +230,14 @@ class Wompi_MP_Order_Sync {
 		$order_id  = absint( wp_unslash( $_POST['order_id'] ?? 0 ) );
 		$order_key = wc_clean( wp_unslash( $_POST['order_key'] ?? '' ) );
 
+		// Rate limit: el polling legítimo hace ~20 req/min por orden.
+		$rate_key = 'wompi_mp_rl_' . $order_id;
+		$count    = (int) get_transient( $rate_key );
+		if ( $count > 40 ) {
+			wp_send_json_error( array( 'message' => 'rate_limited' ), 429 );
+		}
+		set_transient( $rate_key, $count + 1, MINUTE_IN_SECONDS );
+
 		$order = wc_get_order( $order_id );
 		if ( ! $order instanceof WC_Order || ! hash_equals( $order->get_order_key(), (string) $order_key ) || ! self::is_wompi_order( $order ) ) {
 			wp_send_json_error( array( 'message' => 'invalid_order' ), 400 );

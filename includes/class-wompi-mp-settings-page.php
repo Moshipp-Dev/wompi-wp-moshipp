@@ -42,6 +42,7 @@ class Wompi_MP_Settings_Page {
 			'prod_integrity_secret' => '',
 			'prod_events_secret'    => '',
 			'logging'               => 'no',
+			'pending_email'         => 'yes',
 			'fee_percent'           => '2.65',
 			'fee_fixed'             => '700',
 			'fee_iva'               => '19',
@@ -85,8 +86,9 @@ class Wompi_MP_Settings_Page {
 		foreach ( $text_fields as $field ) {
 			$credentials[ $field ] = sanitize_text_field( wp_unslash( $_POST[ $field ] ?? '' ) );
 		}
-		$credentials['testmode'] = empty( $_POST['testmode'] ) ? 'no' : 'yes';
-		$credentials['logging']  = empty( $_POST['logging'] ) ? 'no' : 'yes';
+		$credentials['testmode']      = empty( $_POST['testmode'] ) ? 'no' : 'yes';
+		$credentials['logging']       = empty( $_POST['logging'] ) ? 'no' : 'yes';
+		$credentials['pending_email'] = empty( $_POST['pending_email'] ) ? 'no' : 'yes';
 
 		update_option( Wompi_MP_Gateway::CREDENTIALS_OPTION, $credentials, false );
 
@@ -220,7 +222,10 @@ class Wompi_MP_Settings_Page {
 							<p class="description"><?php esc_html_e( 'Regístrala como "URL de eventos" en el dashboard de Wompi, una vez por ambiente (pruebas y producción).', 'wompi-moshipp' ); ?></p>
 						</td>
 					</tr>
-					<?php self::checkbox_field( 'logging', __( 'Registro de depuración', 'wompi-moshipp' ), __( 'Guardar log de llamadas al API (WooCommerce → Estado → Logs, fuente wompi-moshipp)', 'wompi-moshipp' ), 'yes' === $values['logging'] ); ?>
+					<?php
+					self::checkbox_field( 'pending_email', __( 'Email de instrucciones', 'wompi-moshipp' ), __( 'Enviar al cliente un email con instrucciones cuando el pago quede pendiente de su acción', 'wompi-moshipp' ), 'yes' === ( $values['pending_email'] ?? 'yes' ) );
+					self::checkbox_field( 'logging', __( 'Registro de depuración', 'wompi-moshipp' ), __( 'Guardar log de llamadas al API (WooCommerce → Estado → Logs, fuente wompi-moshipp)', 'wompi-moshipp' ), 'yes' === $values['logging'] );
+					?>
 				</table>
 
 				<p class="submit">

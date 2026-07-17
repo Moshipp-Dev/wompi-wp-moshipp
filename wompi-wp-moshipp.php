@@ -100,6 +100,8 @@ function wompi_mp_init() {
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-webhook.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-admin-order.php';
 	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-settings-page.php';
+	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-reconciler.php';
+	require_once WOMPI_MP_PLUGIN_DIR . 'includes/class-wompi-mp-emails.php';
 
 	add_filter( 'woocommerce_payment_gateways', 'wompi_mp_register_gateways' );
 	add_action( 'wp_enqueue_scripts', 'wompi_mp_enqueue_checkout_styles' );
@@ -110,7 +112,19 @@ function wompi_mp_init() {
 	Wompi_MP_Order_Sync::init();
 	Wompi_MP_Admin_Order::init();
 	Wompi_MP_Settings_Page::init();
+	Wompi_MP_Reconciler::init();
 }
+
+register_deactivation_hook(
+	__FILE__,
+	function () {
+		if ( class_exists( 'Wompi_MP_Reconciler' ) ) {
+			Wompi_MP_Reconciler::unschedule();
+		} else {
+			wp_clear_scheduled_hook( 'wompi_mp_reconcile' );
+		}
+	}
+);
 
 /**
  * Estilos y JS de la pantalla de ajustes de los gateways Wompi.

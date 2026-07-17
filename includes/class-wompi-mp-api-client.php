@@ -101,6 +101,9 @@ class Wompi_MP_API_Client {
 			return $tokens;
 		}
 
+		// La transacción expira en Wompi si el cliente nunca completa el pago.
+		$expiration = gmdate( 'Y-m-d\TH:i:s\Z', time() + 30 * MINUTE_IN_SECONDS );
+
 		$body = array(
 			'acceptance_token'     => $tokens['acceptance_token'],
 			'accept_personal_auth' => $tokens['accept_personal_auth'],
@@ -108,7 +111,8 @@ class Wompi_MP_API_Client {
 			'currency'             => 'COP',
 			'customer_email'       => $customer_email,
 			'reference'            => $reference,
-			'signature'            => $this->integrity_signature( $reference, $amount_in_cents ),
+			'expiration_time'      => $expiration,
+			'signature'            => $this->integrity_signature( $reference, $amount_in_cents, 'COP', $expiration ),
 			'payment_method'       => $payment_method,
 		);
 		if ( $redirect_url ) {

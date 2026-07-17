@@ -288,6 +288,8 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 		$order->update_meta_data( Wompi_MP_Order_Sync::META_SNAPSHOT, Wompi_MP_Order_Sync::build_snapshot( $tx ) );
 		$order->save();
 
+		Wompi_MP_Emails::send_pending_instructions( $order, $this->id );
+
 		return $tx;
 	}
 

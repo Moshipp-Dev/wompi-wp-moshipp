@@ -11,6 +11,113 @@ class Wompi_MP_Admin_Order {
 
 	public static function init(): void {
 		add_action( 'add_meta_boxes', array( __CLASS__, 'register_meta_box' ) );
+
+		// Columna "Wompi" en el listado de pedidos (HPOS y almacenamiento clásico).
+		add_filter( 'manage_woocommerce_page_wc-orders_columns', array( __CLASS__, 'add_list_column' ) );
+		add_action( 'manage_woocommerce_page_wc-orders_custom_column', array( __CLASS__, 'render_list_column' ), 10, 2 );
+		add_filter( 'manage_edit-shop_order_columns', array( __CLASS__, 'add_list_column' ) );
+		add_action( 'manage_shop_order_posts_custom_column', array( __CLASS__, 'render_legacy_list_column' ), 10, 2 );
+
+		// Comisión y neto estimados en la caja de totales de la orden.
+		add_action( 'woocommerce_admin_order_totals_after_total', array( __CLASS__, 'render_totals_rows' ) );
+	}
+
+	/**
+	 * @param array $columns
+	 * @return array
+	 */
+	public static function add_list_column( $columns ) {
+		$new = array();
+		foreach ( $columns as $key => $label ) {
+			$new[ $key ] = $label;
+			if ( 'order_status' === $key ) {
+				$new['wompi_mp'] = __( 'Wompi', 'wompi-moshipp' );
+			}
+		}
+		if ( ! isset( $new['wompi_mp'] ) ) {
+			$new['wompi_mp'] = __( 'Wompi', 'wompi-moshipp' );
+		}
+		return $new;
+	}
+
+	/**
+	 * @param string           $column
+	 * @param WC_Order|WP_Post $order
+	 */
+	public static function render_list_column( $column, $order ): void {
+		if ( 'wompi_mp' !== $column ) {
+			return;
+		}
+		$order = $order instanceof WC_Order ? $order : wc_get_order( $order );
+		if ( ! $order instanceof WC_Order || ! Wompi_MP_Order_Sync::is_wompi_order( $order ) ) {
+			echo '<span style="color:#a7aaad">—</span>';
+			return;
+		}
+		$status = (string) $order->get_meta( Wompi_MP_Order_Sync::META_STATUS );
+		echo wp_kses_post( self::status_badge( $status ?: 'PENDING' ) );
+	}
+
+	public static function render_legacy_list_column( $column, $post_id ): void {
+		self::render_list_column( $column, wc_get_order( $post_id ) );
+	}
+
+	/**
+	 * Filas de comisión/neto estimados bajo los totales de la orden.
+	 *
+	 * @param int $order_id
+	 */
+	public static function render_totals_rows( $order_id ): void {
+		$order = wc_get_order( $order_id );
+		if ( ! $order instanceof WC_Order || ! Wompi_MP_Order_Sync::is_wompi_order( $order ) || ! $order->is_paid() ) {
+			return;
+		}
+		$estimate = self::fee_estimate( (int) round( (float) $order->get_total() * 100 ) );
+		if ( ! $estimate ) {
+			return;
+		}
+		?>
+		<tr>
+			<td class="label"><?php esc_html_e( 'Comisión Wompi (estimada):', 'wompi-moshipp' ); ?></td>
+			<td width="1%"></td>
+			<td class="total">-<?php echo wp_kses_post( wc_price( $estimate['fee'] ) ); ?></td>
+		</tr>
+		<tr>
+			<td class="label"><?php esc_html_e( 'Neto estimado:', 'wompi-moshipp' ); ?></td>
+			<td width="1%"></td>
+			<td class="total"><strong><?php echo wp_kses_post( wc_price( $estimate['net'] ) ); ?></strong></td>
+		</tr>
+		<?php
+	}
+
+	/**
+	 * Comisión estimada según la tarifa configurada. Null si no hay tarifa.
+	 *
+	 * @return array{fee:float,net:float,percent:float,fixed:float,iva:float}|null
+	 */
+	public static function fee_estimate( int $amount_in_cents ): ?array {
+		$credentials = get_option( Wompi_MP_Gateway::CREDENTIALS_OPTION, array() );
+		$credentials = is_array( $credentials ) ? $credentials : array();
+
+		$percent = (string) ( $credentials['fee_percent'] ?? '' );
+		$fixed   = (string) ( $credentials['fee_fixed'] ?? '' );
+		if ( '' === trim( $percent ) && '' === trim( $fixed ) ) {
+			return null;
+		}
+
+		$percent_value = (float) str_replace( ',', '.', $percent );
+		$fixed_value   = (float) str_replace( ',', '.', $fixed );
+		$iva_value     = (float) str_replace( ',', '.', (string) ( $credentials['fee_iva'] ?? '0' ) );
+
+		$amount = $amount_in_cents / 100;
+		$fee    = ( $amount * $percent_value / 100 + $fixed_value ) * ( 1 + $iva_value / 100 );
+
+		return array(
+			'fee'     => $fee,
+			'net'     => $amount - $fee,
+			'percent' => $percent_value,
+			'fixed'   => $fixed_value,
+			'iva'     => $iva_value,
+		);
 	}
 
 	public static function register_meta_box(): void {
@@ -108,32 +215,19 @@ class Wompi_MP_Admin_Order {
 		if ( 'APPROVED' !== $status ) {
 			return;
 		}
-		$credentials = get_option( Wompi_MP_Gateway::CREDENTIALS_OPTION, array() );
-		$credentials = is_array( $credentials ) ? $credentials : array();
-
-		$percent = (string) ( $credentials['fee_percent'] ?? '' );
-		$fixed   = (string) ( $credentials['fee_fixed'] ?? '' );
-		if ( '' === trim( $percent ) && '' === trim( $fixed ) ) {
+		$estimate = self::fee_estimate( $amount_in_cents );
+		if ( ! $estimate ) {
 			return;
 		}
 
-		$percent_value = (float) str_replace( ',', '.', $percent );
-		$fixed_value   = (float) str_replace( ',', '.', $fixed );
-		$iva_value     = (float) str_replace( ',', '.', (string) ( $credentials['fee_iva'] ?? '0' ) );
-
-		$amount   = $amount_in_cents / 100;
-		$fee_base = $amount * $percent_value / 100 + $fixed_value;
-		$fee      = $fee_base * ( 1 + $iva_value / 100 );
-		$net      = $amount - $fee;
-
-		self::row( __( 'Comisión estimada', 'wompi-moshipp' ), wp_kses_post( wc_price( $fee ) ), true );
-		self::row( __( 'Neto estimado', 'wompi-moshipp' ), '<strong>' . wp_kses_post( wc_price( $net ) ) . '</strong>', true );
+		self::row( __( 'Comisión estimada', 'wompi-moshipp' ), wp_kses_post( wc_price( $estimate['fee'] ) ), true );
+		self::row( __( 'Neto estimado', 'wompi-moshipp' ), '<strong>' . wp_kses_post( wc_price( $estimate['net'] ) ) . '</strong>', true );
 		echo '<p class="description" style="margin:6px 0 0;font-size:11px">' . sprintf(
 			/* translators: 1: %% variable, 2: fijo, 3: %% IVA. */
-			esc_html__( 'Estimación con tarifa %1$s%% + %2$s + IVA %3$s%% (configurable en los ajustes del gateway). Wompi no reporta la comisión real por API.', 'wompi-moshipp' ),
-			esc_html( rtrim( rtrim( number_format( $percent_value, 2, '.', '' ), '0' ), '.' ) ),
-			wp_kses_post( wc_price( $fixed_value ) ),
-			esc_html( rtrim( rtrim( number_format( $iva_value, 2, '.', '' ), '0' ), '.' ) )
+			esc_html__( 'Estimación con tarifa %1$s%% + %2$s + IVA %3$s%% (configurable en WooCommerce → Wompi). Wompi no reporta la comisión real por API.', 'wompi-moshipp' ),
+			esc_html( rtrim( rtrim( number_format( $estimate['percent'], 2, '.', '' ), '0' ), '.' ) ),
+			wp_kses_post( wc_price( $estimate['fixed'] ) ),
+			esc_html( rtrim( rtrim( number_format( $estimate['iva'], 2, '.', '' ), '0' ), '.' ) )
 		) . '</p>';
 	}
 
