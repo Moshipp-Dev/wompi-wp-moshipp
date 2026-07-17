@@ -45,6 +45,26 @@
 		);
 	}
 
+	function methodLabel( settings, fallback ) {
+		var children = [];
+		if ( settings.icon ) {
+			children.push(
+				el( 'img', {
+					key: 'icon',
+					src: settings.icon,
+					alt: '',
+					style: { height: '22px', width: 'auto', marginRight: '10px' },
+				} )
+			);
+		}
+		children.push( decodeEntities( settings.title || fallback ) );
+		return el(
+			'span',
+			{ className: 'wompi-mp-method-label', style: { display: 'flex', alignItems: 'center' } },
+			children
+		);
+	}
+
 	function useSetupHandler( props, buildResult ) {
 		var onPaymentSetup = props.eventRegistration.onPaymentSetup;
 		var emitResponse = props.emitResponse;
@@ -132,7 +152,7 @@
 
 		registerPaymentMethod( {
 			name: 'wompi_nequi',
-			label: decodeEntities( nequiSettings.title || 'Nequi' ),
+			label: methodLabel( nequiSettings, 'Nequi' ),
 			ariaLabel: decodeEntities( nequiSettings.title || 'Nequi' ),
 			content: el( NequiContent, null ),
 			edit: el( 'div', null, decodeEntities( nequiSettings.title || 'Nequi' ) ),
@@ -246,7 +266,7 @@
 
 		registerPaymentMethod( {
 			name: 'wompi_daviplata',
-			label: decodeEntities( daviSettings.title || 'Daviplata' ),
+			label: methodLabel( daviSettings, 'Daviplata' ),
 			ariaLabel: decodeEntities( daviSettings.title || 'Daviplata' ),
 			content: el( DaviContent, null ),
 			edit: el( 'div', null, decodeEntities( daviSettings.title || 'Daviplata' ) ),

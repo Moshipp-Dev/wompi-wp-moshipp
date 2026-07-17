@@ -9,6 +9,7 @@ class Wompi_MP_Gateway_Nequi extends Wompi_MP_Gateway {
 
 	public function __construct() {
 		$this->id                 = 'wompi_nequi';
+		$this->icon               = WOMPI_MP_PLUGIN_URL . 'assets/img/nequi.svg';
 		$this->method_title       = __( 'Wompi — Nequi', 'wompi-moshipp' );
 		$this->method_description = __( 'El cliente recibe una notificación push en su app Nequi y aprueba el pago sin salir de la tienda.', 'wompi-moshipp' );
 		$this->order_button_text  = __( 'Pagar con Nequi', 'wompi-moshipp' );

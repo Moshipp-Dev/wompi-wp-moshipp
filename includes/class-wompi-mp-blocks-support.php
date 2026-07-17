@@ -57,6 +57,7 @@ final class Wompi_MP_Blocks_Support extends AbstractPaymentMethodType {
 			'description' => $this->get_setting( 'description', '' ),
 			'supports'    => $gateway ? array_filter( $gateway->supports, array( $gateway, 'supports' ) ) : array(),
 			'brandHtml'   => function_exists( 'wompi_mp_brand_html' ) ? wompi_mp_brand_html( true ) : '',
+			'icon'        => $gateway ? $gateway->icon : '',
 			'legalLinks'  => $links,
 			'docTypes'    => 'wompi_daviplata' === $this->name ? Wompi_MP_Gateway_Daviplata::DOC_TYPES : new stdClass(),
 			'i18n'        => array(
