@@ -233,9 +233,6 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 			</label>
 		</p>
 		<?php
-		if ( function_exists( 'wompi_mp_brand_html' ) ) {
-			echo wp_kses_post( wompi_mp_brand_html( true ) );
-		}
 	}
 
 	protected function acceptance_was_checked(): bool {

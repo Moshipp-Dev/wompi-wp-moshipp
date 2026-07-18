@@ -167,27 +167,6 @@ li.payment_method_wompi_pse > label > img {
 	margin-left: 8px;
 }
 
-/* ---------- Marca del desarrollador ---------- */
-
-.wompi-mp-brand {
-	margin: 0.7em 0 0 !important;
-	text-align: right;
-	font-size: 0.72em;
-	letter-spacing: 0.02em;
-	color: #a1a1aa;
-}
-
-.wompi-mp-brand a.wompi-mp-brand-link {
-	color: #a1a1aa;
-	font-weight: 600;
-	text-decoration: none;
-	border-bottom: 1px dotted currentColor;
-}
-
-.wompi-mp-brand a.wompi-mp-brand-link:hover {
-	color: var(--wompi-mp-accent, #6329f3);
-}
-
 /* ---------- Pantalla de espera / resultado en la página de gracias ---------- */
 
 .wompi-mp-wait {

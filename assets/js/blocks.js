@@ -143,10 +143,7 @@
 					settings: nequiSettings,
 					checked: accepted,
 					onChange: setAccepted,
-				} ),
-				nequiSettings.brandHtml
-					? el( 'div', { dangerouslySetInnerHTML: { __html: nequiSettings.brandHtml } } )
-					: null
+				} )
 			);
 		};
 
@@ -257,10 +254,7 @@
 					settings: daviSettings,
 					checked: accepted,
 					onChange: setAccepted,
-				} ),
-				daviSettings.brandHtml
-					? el( 'div', { dangerouslySetInnerHTML: { __html: daviSettings.brandHtml } } )
-					: null
+				} )
 			);
 		};
 
@@ -423,10 +417,7 @@
 					settings: pseSettings,
 					checked: accepted,
 					onChange: setAccepted,
-				} ),
-				pseSettings.brandHtml
-					? el( 'div', { dangerouslySetInnerHTML: { __html: pseSettings.brandHtml } } )
-					: null
+				} )
 			);
 		};
 
