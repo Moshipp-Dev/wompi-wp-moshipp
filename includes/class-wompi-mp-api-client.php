@@ -51,7 +51,7 @@ class Wompi_MP_API_Client {
 		$acceptance = $merchant['data']['presigned_acceptance']['acceptance_token'] ?? '';
 		$personal   = $merchant['data']['presigned_personal_data_auth']['acceptance_token'] ?? '';
 		if ( ! $acceptance ) {
-			return new WP_Error( 'wompi_mp_no_tokens', __( 'No fue posible obtener los tokens de aceptación de Wompi.', 'wompi-moshipp' ) );
+			return new WP_Error( 'wompi_mp_no_tokens', __( 'No fue posible obtener los tokens de aceptación de Wompi.', 'wompi-wp-moshipp' ) );
 		}
 		return array(
 			'acceptance_token'     => $acceptance,
@@ -184,7 +184,7 @@ class Wompi_MP_API_Client {
 		$response = wp_remote_request( $this->base_url() . $path, $args );
 		if ( is_wp_error( $response ) ) {
 			$this->log( 'Error HTTP: ' . $response->get_error_message(), 'error' );
-			return new WP_Error( 'wompi_mp_http', __( 'No fue posible comunicarse con Wompi. Intenta de nuevo.', 'wompi-moshipp' ) );
+			return new WP_Error( 'wompi_mp_http', __( 'No fue posible comunicarse con Wompi. Intenta de nuevo.', 'wompi-wp-moshipp' ) );
 		}
 
 		$code = wp_remote_retrieve_response_code( $response );
@@ -200,7 +200,7 @@ class Wompi_MP_API_Client {
 	}
 
 	private function extract_error_message( $json ): string {
-		$fallback = __( 'Wompi rechazó la solicitud de pago.', 'wompi-moshipp' );
+		$fallback = __( 'Wompi rechazó la solicitud de pago.', 'wompi-wp-moshipp' );
 		if ( ! is_array( $json ) || empty( $json['error'] ) ) {
 			return $fallback;
 		}
@@ -234,6 +234,6 @@ class Wompi_MP_API_Client {
 		if ( ! $this->logging || ! function_exists( 'wc_get_logger' ) ) {
 			return;
 		}
-		wc_get_logger()->log( $level, $message, array( 'source' => 'wompi-moshipp' ) );
+		wc_get_logger()->log( $level, $message, array( 'source' => 'wompi-wp-moshipp' ) );
 	}
 }

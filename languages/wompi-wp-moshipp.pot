@@ -1,0 +1,661 @@
+# Copyright (C) 2026 Moshipp
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Wompi Pagos — Nequi, Daviplata y PSE 0.5.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wompi-wp-moshipp\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-07-18T04:03:06+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: wompi-wp-moshipp\n"
+
+#. Plugin Name of the plugin
+#: wompi-wp-moshipp.php
+msgid "Wompi Pagos — Nequi, Daviplata y PSE"
+msgstr ""
+
+#. Description of the plugin
+#: wompi-wp-moshipp.php
+msgid "Acepta pagos con Nequi (notificación push), Daviplata y PSE a través de Wompi Colombia. Compatible con el checkout clásico y el checkout por bloques de WooCommerce, y con HPOS."
+msgstr ""
+
+#. Author of the plugin
+#: wompi-wp-moshipp.php
+msgid "Moshipp"
+msgstr ""
+
+#: includes/abstract-wompi-mp-gateway.php:113
+msgid "Credenciales y configuración de Wompi"
+msgstr ""
+
+#. translators: %s: URL de la página central de ajustes.
+#: includes/abstract-wompi-mp-gateway.php:117
+#, php-format
+msgid "Las llaves, comisiones, webhook y activación se configuran una sola vez para ambos métodos en <a href=\"%s\"><strong>WooCommerce → Wompi</strong></a>. Aquí solo personalizas lo que ve el cliente."
+msgstr ""
+
+#: includes/abstract-wompi-mp-gateway.php:141
+#: includes/class-wompi-mp-settings-page.php:158
+msgid "Modo prueba"
+msgstr ""
+
+#: includes/abstract-wompi-mp-gateway.php:143
+#: includes/class-wompi-mp-settings-page.php:160
+msgid "Producción"
+msgstr ""
+
+#: includes/abstract-wompi-mp-gateway.php:146
+msgid "Configurar credenciales Wompi"
+msgstr ""
+
+#: includes/abstract-wompi-mp-gateway.php:147
+#: includes/class-wompi-mp-settings-page.php:163
+msgid "Verificar conexión con Wompi"
+msgstr ""
+
+#: includes/abstract-wompi-mp-gateway.php:153
+msgid "Verificación de integridad fallida: la atribución del desarrollador fue eliminada o modificada. Los métodos de pago Wompi quedaron desactivados. Restaura los archivos originales del plugin o contacta a moshipp.com."
+msgstr ""
+
+#: includes/abstract-wompi-mp-gateway.php:192
+msgid "Sin conexión con Wompi."
+msgstr ""
+
+#: includes/abstract-wompi-mp-gateway.php:206
+msgid "Llave pública inválida."
+msgstr ""
+
+#. translators: 1: URL reglamento, 2: URL autorización de datos.
+#: includes/abstract-wompi-mp-gateway.php:227
+#, php-format
+msgid "Acepto el <a href=\"%1$s\" target=\"_blank\" rel=\"noopener\">reglamento de usuarios</a> y la <a href=\"%2$s\" target=\"_blank\" rel=\"noopener\">autorización para el tratamiento de datos personales</a> de Wompi. <span class=\"required\">*</span>"
+msgstr ""
+
+#: includes/abstract-wompi-mp-gateway.php:260
+msgid "La verificación de integridad del plugin de pagos falló. Contacta al desarrollador (moshipp.com)."
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:34
+#: includes/class-wompi-mp-admin-order.php:38
+#: includes/class-wompi-mp-settings-page.php:26
+msgid "Wompi"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:80
+msgid "Comisión Wompi (estimada):"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:85
+msgid "Neto estimado:"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:127
+msgid "Pago Wompi"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:141
+msgid "Esta orden no se pagó con Wompi."
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:168
+msgid "Aún no hay una transacción Wompi asociada."
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:188
+msgid "Estado"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:189
+msgid "Método"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:190
+msgid "Transacción"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:191
+msgid "Referencia"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:194
+msgid "Ambiente"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:194
+msgid "Sandbox (prueba)"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:199
+msgid "Finalizada"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:203
+msgid "Mensaje"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:208
+msgid "Monto pagado"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:212
+msgid "Ver en el dashboard de Wompi ↗"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:228
+msgid "Comisión estimada"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:229
+msgid "Neto estimado"
+msgstr ""
+
+#. translators: 1: %% variable, 2: fijo, 3: %% IVA.
+#: includes/class-wompi-mp-admin-order.php:232
+#, php-format
+msgid "Estimación con tarifa %1$s%% + %2$s + IVA %3$s%% (configurable en WooCommerce → Wompi). Wompi no reporta la comisión real por API."
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:241
+msgid "Aprobada"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:242
+msgid "Pendiente"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:243
+msgid "Declinada"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:244
+msgid "Error"
+msgstr ""
+
+#: includes/class-wompi-mp-admin-order.php:245
+msgid "Anulada"
+msgstr ""
+
+#: includes/class-wompi-mp-api-client.php:54
+msgid "No fue posible obtener los tokens de aceptación de Wompi."
+msgstr ""
+
+#: includes/class-wompi-mp-api-client.php:187
+msgid "No fue posible comunicarse con Wompi. Intenta de nuevo."
+msgstr ""
+
+#: includes/class-wompi-mp-api-client.php:203
+msgid "Wompi rechazó la solicitud de pago."
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:65
+#: includes/class-wompi-mp-gateway-pse.php:74
+msgid "Banco"
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:66
+#: includes/class-wompi-mp-gateway-pse.php:76
+msgid "— Selecciona tu banco —"
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:67
+#: includes/class-wompi-mp-gateway-pse.php:138
+#: includes/class-wompi-mp-gateway-pse.php:154
+msgid "Selecciona tu banco e ingresa un documento válido para pagar con PSE."
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:68
+#: includes/class-wompi-mp-gateway-pse.php:83
+msgid "Tipo de persona"
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:69
+#: includes/class-wompi-mp-gateway-nequi.php:51
+msgid "Número de celular Nequi"
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:70
+#: includes/class-wompi-mp-gateway-nequi.php:81
+#: includes/class-wompi-mp-gateway-nequi.php:97
+msgid "Ingresa un número de celular Nequi válido (10 dígitos, inicia por 3)."
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:71
+#: includes/class-wompi-mp-gateway-daviplata.php:61
+#: includes/class-wompi-mp-gateway-pse.php:92
+msgid "Tipo de documento"
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:72
+#: includes/class-wompi-mp-gateway-daviplata.php:69
+#: includes/class-wompi-mp-gateway-pse.php:100
+msgid "Número de documento"
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:73
+#: includes/class-wompi-mp-gateway-daviplata.php:102
+#: includes/class-wompi-mp-gateway-daviplata.php:118
+msgid "Ingresa un tipo y número de documento válidos para Daviplata."
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:74
+msgid "Acepto el"
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:75
+msgid "reglamento de usuarios"
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:76
+msgid "y la"
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:77
+msgid "autorización de tratamiento de datos personales"
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:78
+msgid "de Wompi."
+msgstr ""
+
+#: includes/class-wompi-mp-blocks-support.php:79
+#: includes/class-wompi-mp-gateway-daviplata.php:106
+#: includes/class-wompi-mp-gateway-daviplata.php:122
+#: includes/class-wompi-mp-gateway-nequi.php:85
+#: includes/class-wompi-mp-gateway-nequi.php:101
+#: includes/class-wompi-mp-gateway-pse.php:142
+#: includes/class-wompi-mp-gateway-pse.php:158
+msgid "Debes aceptar el reglamento y la autorización de datos de Wompi."
+msgstr ""
+
+#: includes/class-wompi-mp-emails.php:23
+msgid "Abre tu app Nequi y aprueba la notificación de pago que te acabamos de enviar. Tienes 30 minutos antes de que expire."
+msgstr ""
+
+#: includes/class-wompi-mp-emails.php:26
+msgid "Confirma el código que Daviplata te envió por SMS en la página segura de pago. Tienes 30 minutos antes de que expire."
+msgstr ""
+
+#: includes/class-wompi-mp-emails.php:29
+msgid "Completa el pago en el portal de tu banco. Tienes 30 minutos antes de que expire."
+msgstr ""
+
+#: includes/class-wompi-mp-emails.php:32
+msgid "Completa el pago siguiendo las instrucciones del método que elegiste. Tienes 30 minutos antes de que expire."
+msgstr ""
+
+#. translators: %s: número de pedido.
+#: includes/class-wompi-mp-emails.php:37
+#, php-format
+msgid "Tu pedido #%s espera el pago"
+msgstr ""
+
+#. translators: %s: nombre del cliente.
+#: includes/class-wompi-mp-emails.php:43
+#, php-format
+msgid "Hola %s,"
+msgstr ""
+
+#: includes/class-wompi-mp-emails.php:50
+msgid "Ver el estado de tu pedido"
+msgstr ""
+
+#: includes/class-wompi-mp-emails.php:52
+msgid "Cuando el pago se confirme te enviaremos el comprobante. Si no realizaste esta compra, ignora este mensaje."
+msgstr ""
+
+#: includes/class-wompi-mp-emails.php:62
+msgid "Email de instrucciones de pago enviado al cliente."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:22
+msgid "Wompi — Daviplata"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:23
+msgid "El cliente recibe un código OTP por SMS y lo confirma en la página segura de Wompi."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:24
+msgid "Pagar con Daviplata"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:33
+#: includes/class-wompi-mp-gateway-nequi.php:24
+#: includes/class-wompi-mp-gateway-pse.php:38
+msgid "Activar / Desactivar"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:35
+msgid "Activar pagos con Daviplata"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:39
+#: includes/class-wompi-mp-gateway-nequi.php:30
+#: includes/class-wompi-mp-gateway-pse.php:44
+msgid "Título"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:41
+#: includes/class-wompi-mp-settings-page.php:177
+msgid "Daviplata"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:44
+#: includes/class-wompi-mp-gateway-nequi.php:35
+#: includes/class-wompi-mp-gateway-pse.php:49
+msgid "Descripción"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:46
+msgid "Recibirás un código por SMS para confirmar tu pago con Daviplata."
+msgstr ""
+
+#. translators: %s: número de pedido.
+#: includes/class-wompi-mp-gateway-daviplata.php:128
+#: includes/class-wompi-mp-gateway-pse.php:164
+#, php-format
+msgid "Pedido %s"
+msgstr ""
+
+#. translators: %s: ID de transacción Wompi.
+#: includes/class-wompi-mp-gateway-daviplata.php:154
+#, php-format
+msgid "Daviplata: no se obtuvo la URL de pago hosted para la transacción %s."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:158
+msgid "No pudimos iniciar el pago con Daviplata. Intenta de nuevo en unos minutos."
+msgstr ""
+
+#. translators: %s: ID de transacción Wompi.
+#: includes/class-wompi-mp-gateway-daviplata.php:165
+#, php-format
+msgid "Cliente redirigido a la página de pago Daviplata de Wompi. Transacción: %s."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-daviplata.php:204
+msgid "Estamos confirmando tu pago con Daviplata."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-nequi.php:13
+msgid "Wompi — Nequi"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-nequi.php:14
+msgid "El cliente recibe una notificación push en su app Nequi y aprueba el pago sin salir de la tienda."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-nequi.php:15
+msgid "Pagar con Nequi"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-nequi.php:26
+msgid "Activar pagos con Nequi"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-nequi.php:32
+#: includes/class-wompi-mp-settings-page.php:176
+msgid "Nequi"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-nequi.php:37
+msgid "Recibirás una notificación en tu app Nequi para aprobar el pago."
+msgstr ""
+
+#. translators: 1: celular, 2: ID de transacción Wompi.
+#: includes/class-wompi-mp-gateway-nequi.php:121
+#, php-format
+msgid "Notificación push de Nequi enviada al %1$s. Transacción Wompi: %2$s. Esperando aprobación del cliente."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-nequi.php:139
+msgid "Abre tu app Nequi y aprueba la notificación de pago que acabamos de enviarte."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-pse.php:27
+msgid "Wompi — PSE"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-pse.php:28
+msgid "Débito desde cuentas bancarias colombianas: el cliente es redirigido al portal de su banco para autorizar el pago."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-pse.php:29
+msgid "Pagar con PSE"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-pse.php:40
+msgid "Activar pagos con PSE"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-pse.php:46
+msgid "PSE — débito bancario"
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-pse.php:51
+msgid "Serás redirigido al portal de tu banco para autorizar el pago."
+msgstr ""
+
+#. translators: %s: ID de transacción Wompi.
+#: includes/class-wompi-mp-gateway-pse.php:196
+#, php-format
+msgid "Cliente redirigido al portal de su banco (PSE). Transacción: %s."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-pse.php:214
+msgid "No pudimos iniciar el pago con PSE. Intenta de nuevo en unos minutos."
+msgstr ""
+
+#: includes/class-wompi-mp-gateway-pse.php:243
+msgid "Estamos esperando la confirmación de tu banco."
+msgstr ""
+
+#. translators: %s: ID de transacción Wompi.
+#: includes/class-wompi-mp-order-sync.php:132
+#, php-format
+msgid "Pago aprobado por Wompi. Transacción: %s"
+msgstr ""
+
+#. translators: 1: estado Wompi, 2: ID de transacción, 3: mensaje.
+#: includes/class-wompi-mp-order-sync.php:147
+#, php-format
+msgid "Pago %1$s en Wompi. Transacción: %2$s. %3$s"
+msgstr ""
+
+#: includes/class-wompi-mp-order-sync.php:285
+msgid "Tu pago fue rechazado o no pudo completarse."
+msgstr ""
+
+#: includes/class-wompi-mp-order-sync.php:286
+msgid "Intentar de nuevo"
+msgstr ""
+
+#: includes/class-wompi-mp-order-sync.php:295
+msgid "Estamos confirmando tu pago."
+msgstr ""
+
+#: includes/class-wompi-mp-order-sync.php:309
+msgid "El tiempo de espera terminó. Si ya pagaste, esta página se actualizará al recibir la confirmación; si no, puedes reintentar el pago."
+msgstr ""
+
+#: includes/class-wompi-mp-order-sync.php:317
+msgid "Esta página se actualizará automáticamente cuando se confirme el pago."
+msgstr ""
+
+#: includes/class-wompi-mp-reconciler.php:27
+msgid "Cada 15 minutos (reconciliación Wompi)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:25
+#: includes/class-wompi-mp-settings-page.php:150
+msgid "Wompi — Nequi, Daviplata y PSE"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:69
+msgid "No tienes permisos para esto."
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:145
+msgid "Configuración de Wompi guardada."
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:151
+msgid "Configura aquí las credenciales una sola vez: aplican para todos los métodos de pago."
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:172
+msgid "Métodos de pago"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:173
+msgid "Actívalos aquí; el título y la descripción que ve el cliente se personalizan en la página de cada método."
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:176
+msgid "Aceptar pagos con Nequi (notificación push)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:177
+msgid "Aceptar pagos con Daviplata (código OTP)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:178
+msgid "PSE"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:178
+msgid "Aceptar pagos con PSE (débito bancario)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:179
+msgid "Modo de prueba"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:179
+msgid "Usar el ambiente sandbox de Wompi (transacciones simuladas)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:183
+msgid "Credenciales de prueba (sandbox)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:184
+msgid "Las encuentras en comercios.wompi.co, ambiente de pruebas."
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:187
+#: includes/class-wompi-mp-settings-page.php:197
+msgid "Llave pública"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:188
+#: includes/class-wompi-mp-settings-page.php:198
+msgid "Llave privada"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:189
+#: includes/class-wompi-mp-settings-page.php:199
+msgid "Secreto de integridad"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:190
+#: includes/class-wompi-mp-settings-page.php:200
+msgid "Secreto de eventos"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:194
+msgid "Credenciales de producción"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:204
+msgid "Comisiones de Wompi (estimación en las órdenes)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:205
+msgid "El API de Wompi no reporta la comisión cobrada; con tu tarifa el plugin muestra en cada orden una comisión y un neto estimados. Vacío = no mostrar."
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:208
+msgid "Comisión variable (%)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:209
+msgid "Comisión fija (COP)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:210
+msgid "IVA sobre la comisión (%)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:214
+msgid "Webhook y depuración"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:217
+msgid "URL de eventos (webhook)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:221
+msgid "Copiar"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:222
+msgid "¡Copiada!"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:224
+msgid "Regístrala como \"URL de eventos\" en el dashboard de Wompi, una vez por ambiente (pruebas y producción)."
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:228
+msgid "Email de instrucciones"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:228
+msgid "Enviar al cliente un email con instrucciones cuando el pago quede pendiente de su acción"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:229
+msgid "Registro de depuración"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:229
+msgid "Guardar log de llamadas al API (WooCommerce → Estado → Logs, fuente wompi-wp-moshipp)"
+msgstr ""
+
+#: includes/class-wompi-mp-settings-page.php:234
+msgid "Guardar configuración"
+msgstr ""
+
+#. translators: %s: enlace a Moshipp.
+#: wompi-wp-moshipp.php:48
+#, php-format
+msgid "Integración de pagos por %s"
+msgstr ""
+
+#. translators: %s: enlace a Moshipp.
+#: wompi-wp-moshipp.php:54
+#, php-format
+msgid "Desarrollado por %s"
+msgstr ""
+
+#: wompi-wp-moshipp.php:153
+msgid "Verificando…"
+msgstr ""
+
+#: wompi-wp-moshipp.php:154
+msgid "No fue posible verificar. Intenta de nuevo."
+msgstr ""
+
+#: wompi-wp-moshipp.php:155
+msgid "No hay llaves guardadas aún. Guarda los cambios primero."
+msgstr ""
+
+#: wompi-wp-moshipp.php:172
+msgid "Wompi Pagos — Nequi y Daviplata requiere que WooCommerce esté instalado y activo."
+msgstr ""

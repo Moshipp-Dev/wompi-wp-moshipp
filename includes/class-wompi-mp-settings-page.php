@@ -22,8 +22,8 @@ class Wompi_MP_Settings_Page {
 	public static function register_menu(): void {
 		add_submenu_page(
 			'woocommerce',
-			__( 'Wompi — Nequi, Daviplata y PSE', 'wompi-moshipp' ),
-			__( 'Wompi', 'wompi-moshipp' ),
+			__( 'Wompi — Nequi, Daviplata y PSE', 'wompi-wp-moshipp' ),
+			__( 'Wompi', 'wompi-wp-moshipp' ),
 			'manage_woocommerce',
 			self::SLUG,
 			array( __CLASS__, 'render' )
@@ -66,7 +66,7 @@ class Wompi_MP_Settings_Page {
 	public static function save(): void {
 		check_admin_referer( 'wompi_mp_settings' );
 		if ( ! current_user_can( 'manage_woocommerce' ) ) {
-			wp_die( esc_html__( 'No tienes permisos para esto.', 'wompi-moshipp' ) );
+			wp_die( esc_html__( 'No tienes permisos para esto.', 'wompi-wp-moshipp' ) );
 		}
 
 		$credentials = self::credentials();
@@ -142,25 +142,25 @@ class Wompi_MP_Settings_Page {
 		?>
 		<div class="wrap">
 			<?php if ( ! empty( $_GET['updated'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
-				<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Configuración de Wompi guardada.', 'wompi-moshipp' ); ?></p></div>
+				<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Configuración de Wompi guardada.', 'wompi-wp-moshipp' ); ?></p></div>
 			<?php endif; ?>
 
 			<div class="wompi-mp-admin-hero">
 				<div>
-					<h2><?php esc_html_e( 'Wompi — Nequi, Daviplata y PSE', 'wompi-moshipp' ); ?></h2>
-					<p class="wompi-mp-hero-desc"><?php esc_html_e( 'Configura aquí las credenciales una sola vez: aplican para todos los métodos de pago.', 'wompi-moshipp' ); ?></p>
+					<h2><?php esc_html_e( 'Wompi — Nequi, Daviplata y PSE', 'wompi-wp-moshipp' ); ?></h2>
+					<p class="wompi-mp-hero-desc"><?php esc_html_e( 'Configura aquí las credenciales una sola vez: aplican para todos los métodos de pago.', 'wompi-wp-moshipp' ); ?></p>
 					<?php echo function_exists( 'wompi_mp_brand_html' ) ? wp_kses_post( wompi_mp_brand_html() ) : ''; ?>
 				</div>
 				<div class="wompi-mp-hero-meta">
 					<span class="wompi-mp-badges">
 						<span class="wompi-mp-badge"><?php echo esc_html( 'v' . WOMPI_MP_VERSION ); ?></span>
 						<?php if ( $is_test ) : ?>
-							<span class="wompi-mp-badge wompi-mp-badge-test"><?php esc_html_e( 'Modo prueba', 'wompi-moshipp' ); ?></span>
+							<span class="wompi-mp-badge wompi-mp-badge-test"><?php esc_html_e( 'Modo prueba', 'wompi-wp-moshipp' ); ?></span>
 						<?php else : ?>
-							<span class="wompi-mp-badge wompi-mp-badge-prod"><?php esc_html_e( 'Producción', 'wompi-moshipp' ); ?></span>
+							<span class="wompi-mp-badge wompi-mp-badge-prod"><?php esc_html_e( 'Producción', 'wompi-wp-moshipp' ); ?></span>
 						<?php endif; ?>
 					</span>
-					<button type="button" class="button" id="wompi-mp-check"><?php esc_html_e( 'Verificar conexión con Wompi', 'wompi-moshipp' ); ?></button>
+					<button type="button" class="button" id="wompi-mp-check"><?php esc_html_e( 'Verificar conexión con Wompi', 'wompi-wp-moshipp' ); ?></button>
 					<span class="wompi-mp-check-result" id="wompi-mp-check-result"></span>
 				</div>
 			</div>
@@ -169,69 +169,69 @@ class Wompi_MP_Settings_Page {
 				<input type="hidden" name="action" value="wompi_mp_save_settings" />
 				<?php wp_nonce_field( 'wompi_mp_settings' ); ?>
 
-				<h3><?php esc_html_e( 'Métodos de pago', 'wompi-moshipp' ); ?></h3>
-				<p><?php esc_html_e( 'Actívalos aquí; el título y la descripción que ve el cliente se personalizan en la página de cada método.', 'wompi-moshipp' ); ?></p>
+				<h3><?php esc_html_e( 'Métodos de pago', 'wompi-wp-moshipp' ); ?></h3>
+				<p><?php esc_html_e( 'Actívalos aquí; el título y la descripción que ve el cliente se personalizan en la página de cada método.', 'wompi-wp-moshipp' ); ?></p>
 				<table class="form-table">
 					<?php
-					self::checkbox_field( 'enable_nequi', __( 'Nequi', 'wompi-moshipp' ), __( 'Aceptar pagos con Nequi (notificación push)', 'wompi-moshipp' ), self::gateway_enabled( 'wompi_nequi' ) );
-					self::checkbox_field( 'enable_daviplata', __( 'Daviplata', 'wompi-moshipp' ), __( 'Aceptar pagos con Daviplata (código OTP)', 'wompi-moshipp' ), self::gateway_enabled( 'wompi_daviplata' ) );
-					self::checkbox_field( 'enable_pse', __( 'PSE', 'wompi-moshipp' ), __( 'Aceptar pagos con PSE (débito bancario)', 'wompi-moshipp' ), self::gateway_enabled( 'wompi_pse' ) );
-					self::checkbox_field( 'testmode', __( 'Modo de prueba', 'wompi-moshipp' ), __( 'Usar el ambiente sandbox de Wompi (transacciones simuladas)', 'wompi-moshipp' ), $is_test );
+					self::checkbox_field( 'enable_nequi', __( 'Nequi', 'wompi-wp-moshipp' ), __( 'Aceptar pagos con Nequi (notificación push)', 'wompi-wp-moshipp' ), self::gateway_enabled( 'wompi_nequi' ) );
+					self::checkbox_field( 'enable_daviplata', __( 'Daviplata', 'wompi-wp-moshipp' ), __( 'Aceptar pagos con Daviplata (código OTP)', 'wompi-wp-moshipp' ), self::gateway_enabled( 'wompi_daviplata' ) );
+					self::checkbox_field( 'enable_pse', __( 'PSE', 'wompi-wp-moshipp' ), __( 'Aceptar pagos con PSE (débito bancario)', 'wompi-wp-moshipp' ), self::gateway_enabled( 'wompi_pse' ) );
+					self::checkbox_field( 'testmode', __( 'Modo de prueba', 'wompi-wp-moshipp' ), __( 'Usar el ambiente sandbox de Wompi (transacciones simuladas)', 'wompi-wp-moshipp' ), $is_test );
 					?>
 				</table>
 
-				<h3><?php esc_html_e( 'Credenciales de prueba (sandbox)', 'wompi-moshipp' ); ?></h3>
-				<p><?php esc_html_e( 'Las encuentras en comercios.wompi.co, ambiente de pruebas.', 'wompi-moshipp' ); ?></p>
+				<h3><?php esc_html_e( 'Credenciales de prueba (sandbox)', 'wompi-wp-moshipp' ); ?></h3>
+				<p><?php esc_html_e( 'Las encuentras en comercios.wompi.co, ambiente de pruebas.', 'wompi-wp-moshipp' ); ?></p>
 				<table class="form-table">
 					<?php
-					self::text_field( 'test_public_key', __( 'Llave pública', 'wompi-moshipp' ), 'pub_test_…', $values );
-					self::text_field( 'test_private_key', __( 'Llave privada', 'wompi-moshipp' ), 'prv_test_…', $values, 'password' );
-					self::text_field( 'test_integrity_secret', __( 'Secreto de integridad', 'wompi-moshipp' ), 'test_integrity_…', $values, 'password' );
-					self::text_field( 'test_events_secret', __( 'Secreto de eventos', 'wompi-moshipp' ), 'test_events_…', $values, 'password' );
+					self::text_field( 'test_public_key', __( 'Llave pública', 'wompi-wp-moshipp' ), 'pub_test_…', $values );
+					self::text_field( 'test_private_key', __( 'Llave privada', 'wompi-wp-moshipp' ), 'prv_test_…', $values, 'password' );
+					self::text_field( 'test_integrity_secret', __( 'Secreto de integridad', 'wompi-wp-moshipp' ), 'test_integrity_…', $values, 'password' );
+					self::text_field( 'test_events_secret', __( 'Secreto de eventos', 'wompi-wp-moshipp' ), 'test_events_…', $values, 'password' );
 					?>
 				</table>
 
-				<h3><?php esc_html_e( 'Credenciales de producción', 'wompi-moshipp' ); ?></h3>
+				<h3><?php esc_html_e( 'Credenciales de producción', 'wompi-wp-moshipp' ); ?></h3>
 				<table class="form-table">
 					<?php
-					self::text_field( 'prod_public_key', __( 'Llave pública', 'wompi-moshipp' ), 'pub_prod_…', $values );
-					self::text_field( 'prod_private_key', __( 'Llave privada', 'wompi-moshipp' ), 'prv_prod_…', $values, 'password' );
-					self::text_field( 'prod_integrity_secret', __( 'Secreto de integridad', 'wompi-moshipp' ), 'prod_integrity_…', $values, 'password' );
-					self::text_field( 'prod_events_secret', __( 'Secreto de eventos', 'wompi-moshipp' ), 'prod_events_…', $values, 'password' );
+					self::text_field( 'prod_public_key', __( 'Llave pública', 'wompi-wp-moshipp' ), 'pub_prod_…', $values );
+					self::text_field( 'prod_private_key', __( 'Llave privada', 'wompi-wp-moshipp' ), 'prv_prod_…', $values, 'password' );
+					self::text_field( 'prod_integrity_secret', __( 'Secreto de integridad', 'wompi-wp-moshipp' ), 'prod_integrity_…', $values, 'password' );
+					self::text_field( 'prod_events_secret', __( 'Secreto de eventos', 'wompi-wp-moshipp' ), 'prod_events_…', $values, 'password' );
 					?>
 				</table>
 
-				<h3><?php esc_html_e( 'Comisiones de Wompi (estimación en las órdenes)', 'wompi-moshipp' ); ?></h3>
-				<p><?php esc_html_e( 'El API de Wompi no reporta la comisión cobrada; con tu tarifa el plugin muestra en cada orden una comisión y un neto estimados. Vacío = no mostrar.', 'wompi-moshipp' ); ?></p>
+				<h3><?php esc_html_e( 'Comisiones de Wompi (estimación en las órdenes)', 'wompi-wp-moshipp' ); ?></h3>
+				<p><?php esc_html_e( 'El API de Wompi no reporta la comisión cobrada; con tu tarifa el plugin muestra en cada orden una comisión y un neto estimados. Vacío = no mostrar.', 'wompi-wp-moshipp' ); ?></p>
 				<table class="form-table">
 					<?php
-					self::text_field( 'fee_percent', __( 'Comisión variable (%)', 'wompi-moshipp' ), '2.65', $values );
-					self::text_field( 'fee_fixed', __( 'Comisión fija (COP)', 'wompi-moshipp' ), '700', $values );
-					self::text_field( 'fee_iva', __( 'IVA sobre la comisión (%)', 'wompi-moshipp' ), '19', $values );
+					self::text_field( 'fee_percent', __( 'Comisión variable (%)', 'wompi-wp-moshipp' ), '2.65', $values );
+					self::text_field( 'fee_fixed', __( 'Comisión fija (COP)', 'wompi-wp-moshipp' ), '700', $values );
+					self::text_field( 'fee_iva', __( 'IVA sobre la comisión (%)', 'wompi-wp-moshipp' ), '19', $values );
 					?>
 				</table>
 
-				<h3><?php esc_html_e( 'Webhook y depuración', 'wompi-moshipp' ); ?></h3>
+				<h3><?php esc_html_e( 'Webhook y depuración', 'wompi-wp-moshipp' ); ?></h3>
 				<table class="form-table">
 					<tr valign="top">
-						<th scope="row" class="titledesc"><?php esc_html_e( 'URL de eventos (webhook)', 'wompi-moshipp' ); ?></th>
+						<th scope="row" class="titledesc"><?php esc_html_e( 'URL de eventos (webhook)', 'wompi-wp-moshipp' ); ?></th>
 						<td class="forminp">
 							<div class="wompi-mp-webhook-box">
 								<code><?php echo esc_html( $webhook_url ); ?></code>
-								<button type="button" class="button" data-wompi-copy="<?php echo esc_attr( $webhook_url ); ?>"><?php esc_html_e( 'Copiar', 'wompi-moshipp' ); ?></button>
-								<span class="wompi-mp-copy-done" style="display:none"><?php esc_html_e( '¡Copiada!', 'wompi-moshipp' ); ?></span>
+								<button type="button" class="button" data-wompi-copy="<?php echo esc_attr( $webhook_url ); ?>"><?php esc_html_e( 'Copiar', 'wompi-wp-moshipp' ); ?></button>
+								<span class="wompi-mp-copy-done" style="display:none"><?php esc_html_e( '¡Copiada!', 'wompi-wp-moshipp' ); ?></span>
 							</div>
-							<p class="description"><?php esc_html_e( 'Regístrala como "URL de eventos" en el dashboard de Wompi, una vez por ambiente (pruebas y producción).', 'wompi-moshipp' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Regístrala como "URL de eventos" en el dashboard de Wompi, una vez por ambiente (pruebas y producción).', 'wompi-wp-moshipp' ); ?></p>
 						</td>
 					</tr>
 					<?php
-					self::checkbox_field( 'pending_email', __( 'Email de instrucciones', 'wompi-moshipp' ), __( 'Enviar al cliente un email con instrucciones cuando el pago quede pendiente de su acción', 'wompi-moshipp' ), 'yes' === ( $values['pending_email'] ?? 'yes' ) );
-					self::checkbox_field( 'logging', __( 'Registro de depuración', 'wompi-moshipp' ), __( 'Guardar log de llamadas al API (WooCommerce → Estado → Logs, fuente wompi-moshipp)', 'wompi-moshipp' ), 'yes' === $values['logging'] );
+					self::checkbox_field( 'pending_email', __( 'Email de instrucciones', 'wompi-wp-moshipp' ), __( 'Enviar al cliente un email con instrucciones cuando el pago quede pendiente de su acción', 'wompi-wp-moshipp' ), 'yes' === ( $values['pending_email'] ?? 'yes' ) );
+					self::checkbox_field( 'logging', __( 'Registro de depuración', 'wompi-wp-moshipp' ), __( 'Guardar log de llamadas al API (WooCommerce → Estado → Logs, fuente wompi-wp-moshipp)', 'wompi-wp-moshipp' ), 'yes' === $values['logging'] );
 					?>
 				</table>
 
 				<p class="submit">
-					<button type="submit" class="button button-primary button-hero"><?php esc_html_e( 'Guardar configuración', 'wompi-moshipp' ); ?></button>
+					<button type="submit" class="button button-primary button-hero"><?php esc_html_e( 'Guardar configuración', 'wompi-wp-moshipp' ); ?></button>
 				</p>
 			</form>
 		</div>

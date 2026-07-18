@@ -24,7 +24,7 @@ class Wompi_MP_Reconciler {
 	public static function register_interval( array $schedules ): array {
 		$schedules[ self::INTERVAL ] = array(
 			'interval' => 15 * MINUTE_IN_SECONDS,
-			'display'  => __( 'Cada 15 minutos (reconciliación Wompi)', 'wompi-moshipp' ),
+			'display'  => __( 'Cada 15 minutos (reconciliación Wompi)', 'wompi-wp-moshipp' ),
 		);
 		return $schedules;
 	}
@@ -86,7 +86,7 @@ class Wompi_MP_Reconciler {
 
 	private static function log( string $message ): void {
 		if ( function_exists( 'wc_get_logger' ) ) {
-			wc_get_logger()->info( '[reconciliador] ' . $message, array( 'source' => 'wompi-moshipp' ) );
+			wc_get_logger()->info( '[reconciliador] ' . $message, array( 'source' => 'wompi-wp-moshipp' ) );
 		}
 	}
 }

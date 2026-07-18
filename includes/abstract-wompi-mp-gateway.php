@@ -110,11 +110,11 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 	protected function shared_form_fields(): array {
 		return array(
 			'central_settings' => array(
-				'title'       => __( 'Credenciales y configuración de Wompi', 'wompi-moshipp' ),
+				'title'       => __( 'Credenciales y configuración de Wompi', 'wompi-wp-moshipp' ),
 				'type'        => 'title',
 				'description' => sprintf(
 					/* translators: %s: URL de la página central de ajustes. */
-					__( 'Las llaves, comisiones, webhook y activación se configuran una sola vez para ambos métodos en <a href="%s"><strong>WooCommerce → Wompi</strong></a>. Aquí solo personalizas lo que ve el cliente.', 'wompi-moshipp' ),
+					__( 'Las llaves, comisiones, webhook y activación se configuran una sola vez para ambos métodos en <a href="%s"><strong>WooCommerce → Wompi</strong></a>. Aquí solo personalizas lo que ve el cliente.', 'wompi-wp-moshipp' ),
 					esc_url( Wompi_MP_Settings_Page::url() )
 				),
 			),
@@ -138,19 +138,19 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 				<span class="wompi-mp-badges">
 					<span class="wompi-mp-badge"><?php echo esc_html( 'v' . WOMPI_MP_VERSION ); ?></span>
 					<?php if ( $is_test ) : ?>
-						<span class="wompi-mp-badge wompi-mp-badge-test"><?php esc_html_e( 'Modo prueba', 'wompi-moshipp' ); ?></span>
+						<span class="wompi-mp-badge wompi-mp-badge-test"><?php esc_html_e( 'Modo prueba', 'wompi-wp-moshipp' ); ?></span>
 					<?php else : ?>
-						<span class="wompi-mp-badge wompi-mp-badge-prod"><?php esc_html_e( 'Producción', 'wompi-moshipp' ); ?></span>
+						<span class="wompi-mp-badge wompi-mp-badge-prod"><?php esc_html_e( 'Producción', 'wompi-wp-moshipp' ); ?></span>
 					<?php endif; ?>
 				</span>
-				<a class="button" href="<?php echo esc_url( Wompi_MP_Settings_Page::url() ); ?>"><?php esc_html_e( 'Configurar credenciales Wompi', 'wompi-moshipp' ); ?></a>
-				<button type="button" class="button" id="wompi-mp-check"><?php esc_html_e( 'Verificar conexión con Wompi', 'wompi-moshipp' ); ?></button>
+				<a class="button" href="<?php echo esc_url( Wompi_MP_Settings_Page::url() ); ?>"><?php esc_html_e( 'Configurar credenciales Wompi', 'wompi-wp-moshipp' ); ?></a>
+				<button type="button" class="button" id="wompi-mp-check"><?php esc_html_e( 'Verificar conexión con Wompi', 'wompi-wp-moshipp' ); ?></button>
 				<span class="wompi-mp-check-result" id="wompi-mp-check-result"></span>
 			</div>
 		</div>
 		<?php if ( ! function_exists( 'wompi_mp_brand_ok' ) || ! wompi_mp_brand_ok() ) : ?>
 			<div class="notice notice-error inline">
-				<p><?php esc_html_e( 'Verificación de integridad fallida: la atribución del desarrollador fue eliminada o modificada. Los métodos de pago Wompi quedaron desactivados. Restaura los archivos originales del plugin o contacta a moshipp.com.', 'wompi-moshipp' ); ?></p>
+				<p><?php esc_html_e( 'Verificación de integridad fallida: la atribución del desarrollador fue eliminada o modificada. Los métodos de pago Wompi quedaron desactivados. Restaura los archivos originales del plugin o contacta a moshipp.com.', 'wompi-wp-moshipp' ); ?></p>
 			</div>
 		<?php endif; ?>
 		<div class="wompi-mp-admin-body wompi-mp-admin-<?php echo esc_attr( $brand ); ?>">
@@ -189,7 +189,7 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 			if ( is_wp_error( $response ) ) {
 				$results[ $env ] = array(
 					'ok'      => false,
-					'message' => __( 'Sin conexión con Wompi.', 'wompi-moshipp' ),
+					'message' => __( 'Sin conexión con Wompi.', 'wompi-wp-moshipp' ),
 				);
 				continue;
 			}
@@ -203,7 +203,7 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 			} else {
 				$results[ $env ] = array(
 					'ok'      => false,
-					'message' => __( 'Llave pública inválida.', 'wompi-moshipp' ),
+					'message' => __( 'Llave pública inválida.', 'wompi-wp-moshipp' ),
 				);
 			}
 		}
@@ -224,7 +224,7 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 				<?php
 				printf(
 					/* translators: 1: URL reglamento, 2: URL autorización de datos. */
-					wp_kses_post( __( 'Acepto el <a href="%1$s" target="_blank" rel="noopener">reglamento de usuarios</a> y la <a href="%2$s" target="_blank" rel="noopener">autorización para el tratamiento de datos personales</a> de Wompi. <span class="required">*</span>', 'wompi-moshipp' ) ),
+					wp_kses_post( __( 'Acepto el <a href="%1$s" target="_blank" rel="noopener">reglamento de usuarios</a> y la <a href="%2$s" target="_blank" rel="noopener">autorización para el tratamiento de datos personales</a> de Wompi. <span class="required">*</span>', 'wompi-wp-moshipp' ) ),
 					esc_url( $links['policy'] ),
 					esc_url( $links['personal_data'] )
 				);
@@ -257,7 +257,7 @@ abstract class Wompi_MP_Gateway extends WC_Payment_Gateway {
 		if ( ! function_exists( 'wompi_mp_brand_ok' ) || ! wompi_mp_brand_ok() ) {
 			return new WP_Error(
 				'wompi_mp_integrity',
-				__( 'La verificación de integridad del plugin de pagos falló. Contacta al desarrollador (moshipp.com).', 'wompi-moshipp' )
+				__( 'La verificación de integridad del plugin de pagos falló. Contacta al desarrollador (moshipp.com).', 'wompi-wp-moshipp' )
 			);
 		}
 

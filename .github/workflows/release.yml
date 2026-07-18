@@ -23,6 +23,7 @@ jobs:
             --exclude='PLAN.md' \
             --exclude='build' \
             --exclude='*.zip' \
+            --exclude='.DS_Store' \
             ./ build/wompi-wp-moshipp/
           cd build && zip -rq ../wompi-wp-moshipp.zip wompi-wp-moshipp
 

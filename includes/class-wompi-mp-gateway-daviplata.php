@@ -19,9 +19,9 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 	public function __construct() {
 		$this->id                 = 'wompi_daviplata';
 		$this->icon               = WOMPI_MP_PLUGIN_URL . 'assets/img/daviplata.png';
-		$this->method_title       = __( 'Wompi — Daviplata', 'wompi-moshipp' );
-		$this->method_description = __( 'El cliente recibe un código OTP por SMS y lo confirma en la página segura de Wompi.', 'wompi-moshipp' );
-		$this->order_button_text  = __( 'Pagar con Daviplata', 'wompi-moshipp' );
+		$this->method_title       = __( 'Wompi — Daviplata', 'wompi-wp-moshipp' );
+		$this->method_description = __( 'El cliente recibe un código OTP por SMS y lo confirma en la página segura de Wompi.', 'wompi-wp-moshipp' );
+		$this->order_button_text  = __( 'Pagar con Daviplata', 'wompi-wp-moshipp' );
 
 		parent::__construct();
 	}
@@ -30,20 +30,20 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 		$this->form_fields = array_merge(
 			array(
 				'enabled'     => array(
-					'title'   => __( 'Activar / Desactivar', 'wompi-moshipp' ),
+					'title'   => __( 'Activar / Desactivar', 'wompi-wp-moshipp' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Activar pagos con Daviplata', 'wompi-moshipp' ),
+					'label'   => __( 'Activar pagos con Daviplata', 'wompi-wp-moshipp' ),
 					'default' => 'no',
 				),
 				'title'       => array(
-					'title'   => __( 'Título', 'wompi-moshipp' ),
+					'title'   => __( 'Título', 'wompi-wp-moshipp' ),
 					'type'    => 'text',
-					'default' => __( 'Daviplata', 'wompi-moshipp' ),
+					'default' => __( 'Daviplata', 'wompi-wp-moshipp' ),
 				),
 				'description' => array(
-					'title'   => __( 'Descripción', 'wompi-moshipp' ),
+					'title'   => __( 'Descripción', 'wompi-wp-moshipp' ),
 					'type'    => 'textarea',
-					'default' => __( 'Recibirás un código por SMS para confirmar tu pago con Daviplata.', 'wompi-moshipp' ),
+					'default' => __( 'Recibirás un código por SMS para confirmar tu pago con Daviplata.', 'wompi-wp-moshipp' ),
 				),
 			),
 			$this->shared_form_fields()
@@ -58,7 +58,7 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 			<?php endif; ?>
 			<div class="wompi-mp-cols">
 				<p class="form-row wompi-mp-field">
-					<label for="wompi_mp_doc_type"><?php esc_html_e( 'Tipo de documento', 'wompi-moshipp' ); ?> <span class="required">*</span></label>
+					<label for="wompi_mp_doc_type"><?php esc_html_e( 'Tipo de documento', 'wompi-wp-moshipp' ); ?> <span class="required">*</span></label>
 					<select id="wompi_mp_doc_type" name="wompi_mp_doc_type">
 						<?php foreach ( self::DOC_TYPES as $code => $label ) : ?>
 							<option value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
@@ -66,7 +66,7 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 					</select>
 				</p>
 				<p class="form-row wompi-mp-field">
-					<label for="wompi_mp_doc_number"><?php esc_html_e( 'Número de documento', 'wompi-moshipp' ); ?> <span class="required">*</span></label>
+					<label for="wompi_mp_doc_number"><?php esc_html_e( 'Número de documento', 'wompi-wp-moshipp' ); ?> <span class="required">*</span></label>
 					<input
 						type="text"
 						id="wompi_mp_doc_number"
@@ -85,9 +85,9 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 
 	private function get_posted_doc(): array {
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- WooCommerce valida el nonce del checkout.
-		$type = strtoupper( (string) wc_clean( wp_unslash( $_POST['wompi_mp_doc_type'] ?? '' ) ) );
+		$type = isset( $_POST['wompi_mp_doc_type'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_POST['wompi_mp_doc_type'] ) ) ) : '';
 		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		$number = preg_replace( '/\D/', '', (string) wc_clean( wp_unslash( $_POST['wompi_mp_doc_number'] ?? '' ) ) );
+		$number = isset( $_POST['wompi_mp_doc_number'] ) ? preg_replace( '/\D/', '', sanitize_text_field( wp_unslash( $_POST['wompi_mp_doc_number'] ) ) ) : '';
 		return array( $type, $number );
 	}
 
@@ -99,11 +99,11 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 		list( $type, $number ) = $this->get_posted_doc();
 		$valid                 = true;
 		if ( ! $this->doc_is_valid( $type, $number ) ) {
-			wc_add_notice( __( 'Ingresa un tipo y número de documento válidos para Daviplata.', 'wompi-moshipp' ), 'error' );
+			wc_add_notice( __( 'Ingresa un tipo y número de documento válidos para Daviplata.', 'wompi-wp-moshipp' ), 'error' );
 			$valid = false;
 		}
 		if ( ! $this->acceptance_was_checked() ) {
-			wc_add_notice( __( 'Debes aceptar el reglamento y la autorización de datos de Wompi.', 'wompi-moshipp' ), 'error' );
+			wc_add_notice( __( 'Debes aceptar el reglamento y la autorización de datos de Wompi.', 'wompi-wp-moshipp' ), 'error' );
 			$valid = false;
 		}
 		return $valid;
@@ -115,17 +115,17 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 
 		// El checkout por bloques no pasa por validate_fields(): revalidar aquí.
 		if ( ! $this->doc_is_valid( $type, $number ) ) {
-			wc_add_notice( __( 'Ingresa un tipo y número de documento válidos para Daviplata.', 'wompi-moshipp' ), 'error' );
+			wc_add_notice( __( 'Ingresa un tipo y número de documento válidos para Daviplata.', 'wompi-wp-moshipp' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 		if ( ! $this->acceptance_was_checked() ) {
-			wc_add_notice( __( 'Debes aceptar el reglamento y la autorización de datos de Wompi.', 'wompi-moshipp' ), 'error' );
+			wc_add_notice( __( 'Debes aceptar el reglamento y la autorización de datos de Wompi.', 'wompi-wp-moshipp' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
 		$description = sprintf(
 			/* translators: %s: número de pedido. */
-			__( 'Pedido %s', 'wompi-moshipp' ),
+			__( 'Pedido %s', 'wompi-wp-moshipp' ),
 			$order->get_order_number()
 		);
 
@@ -151,18 +151,18 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 			$order->add_order_note(
 				sprintf(
 					/* translators: %s: ID de transacción Wompi. */
-					__( 'Daviplata: no se obtuvo la URL de pago hosted para la transacción %s.', 'wompi-moshipp' ),
+					__( 'Daviplata: no se obtuvo la URL de pago hosted para la transacción %s.', 'wompi-wp-moshipp' ),
 					$tx['id']
 				)
 			);
-			wc_add_notice( __( 'No pudimos iniciar el pago con Daviplata. Intenta de nuevo en unos minutos.', 'wompi-moshipp' ), 'error' );
+			wc_add_notice( __( 'No pudimos iniciar el pago con Daviplata. Intenta de nuevo en unos minutos.', 'wompi-wp-moshipp' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
 		$order->add_order_note(
 			sprintf(
 				/* translators: %s: ID de transacción Wompi. */
-				__( 'Cliente redirigido a la página de pago Daviplata de Wompi. Transacción: %s.', 'wompi-moshipp' ),
+				__( 'Cliente redirigido a la página de pago Daviplata de Wompi. Transacción: %s.', 'wompi-wp-moshipp' ),
 				$tx['id']
 			)
 		);
@@ -201,6 +201,6 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 	}
 
 	public function waiting_message(): string {
-		return __( 'Estamos confirmando tu pago con Daviplata.', 'wompi-moshipp' );
+		return __( 'Estamos confirmando tu pago con Daviplata.', 'wompi-wp-moshipp' );
 	}
 }

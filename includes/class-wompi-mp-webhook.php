@@ -110,7 +110,7 @@ class Wompi_MP_Webhook {
 
 	private static function log( string $message, string $level = 'info' ): void {
 		if ( function_exists( 'wc_get_logger' ) ) {
-			wc_get_logger()->log( $level, '[webhook] ' . $message, array( 'source' => 'wompi-moshipp' ) );
+			wc_get_logger()->log( $level, '[webhook] ' . $message, array( 'source' => 'wompi-wp-moshipp' ) );
 		}
 	}
 }

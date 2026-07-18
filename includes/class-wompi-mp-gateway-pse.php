@@ -24,9 +24,9 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 	public function __construct() {
 		$this->id                 = 'wompi_pse';
 		$this->icon               = WOMPI_MP_PLUGIN_URL . 'assets/img/pse.png';
-		$this->method_title       = __( 'Wompi — PSE', 'wompi-moshipp' );
-		$this->method_description = __( 'Débito desde cuentas bancarias colombianas: el cliente es redirigido al portal de su banco para autorizar el pago.', 'wompi-moshipp' );
-		$this->order_button_text  = __( 'Pagar con PSE', 'wompi-moshipp' );
+		$this->method_title       = __( 'Wompi — PSE', 'wompi-wp-moshipp' );
+		$this->method_description = __( 'Débito desde cuentas bancarias colombianas: el cliente es redirigido al portal de su banco para autorizar el pago.', 'wompi-wp-moshipp' );
+		$this->order_button_text  = __( 'Pagar con PSE', 'wompi-wp-moshipp' );
 
 		parent::__construct();
 	}
@@ -35,20 +35,20 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 		$this->form_fields = array_merge(
 			array(
 				'enabled'     => array(
-					'title'   => __( 'Activar / Desactivar', 'wompi-moshipp' ),
+					'title'   => __( 'Activar / Desactivar', 'wompi-wp-moshipp' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Activar pagos con PSE', 'wompi-moshipp' ),
+					'label'   => __( 'Activar pagos con PSE', 'wompi-wp-moshipp' ),
 					'default' => 'no',
 				),
 				'title'       => array(
-					'title'   => __( 'Título', 'wompi-moshipp' ),
+					'title'   => __( 'Título', 'wompi-wp-moshipp' ),
 					'type'    => 'text',
-					'default' => __( 'PSE — débito bancario', 'wompi-moshipp' ),
+					'default' => __( 'PSE — débito bancario', 'wompi-wp-moshipp' ),
 				),
 				'description' => array(
-					'title'   => __( 'Descripción', 'wompi-moshipp' ),
+					'title'   => __( 'Descripción', 'wompi-wp-moshipp' ),
 					'type'    => 'textarea',
-					'default' => __( 'Serás redirigido al portal de tu banco para autorizar el pago.', 'wompi-moshipp' ),
+					'default' => __( 'Serás redirigido al portal de tu banco para autorizar el pago.', 'wompi-wp-moshipp' ),
 				),
 			),
 			$this->shared_form_fields()
@@ -71,16 +71,16 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 				<p class="wompi-mp-desc"><?php echo wp_kses_post( $this->description ); ?></p>
 			<?php endif; ?>
 			<p class="form-row form-row-wide wompi-mp-field">
-				<label for="wompi_mp_pse_bank"><?php esc_html_e( 'Banco', 'wompi-moshipp' ); ?> <span class="required">*</span></label>
+				<label for="wompi_mp_pse_bank"><?php esc_html_e( 'Banco', 'wompi-wp-moshipp' ); ?> <span class="required">*</span></label>
 				<select id="wompi_mp_pse_bank" name="wompi_mp_pse_bank">
-					<option value=""><?php esc_html_e( '— Selecciona tu banco —', 'wompi-moshipp' ); ?></option>
+					<option value=""><?php esc_html_e( '— Selecciona tu banco —', 'wompi-wp-moshipp' ); ?></option>
 					<?php foreach ( $banks as $bank ) : ?>
 						<option value="<?php echo esc_attr( $bank['financial_institution_code'] ); ?>"><?php echo esc_html( $bank['financial_institution_name'] ); ?></option>
 					<?php endforeach; ?>
 				</select>
 			</p>
 			<p class="form-row form-row-wide wompi-mp-field">
-				<label for="wompi_mp_user_type"><?php esc_html_e( 'Tipo de persona', 'wompi-moshipp' ); ?> <span class="required">*</span></label>
+				<label for="wompi_mp_user_type"><?php esc_html_e( 'Tipo de persona', 'wompi-wp-moshipp' ); ?> <span class="required">*</span></label>
 				<select id="wompi_mp_user_type" name="wompi_mp_user_type">
 					<?php foreach ( self::USER_TYPES as $code => $label ) : ?>
 						<option value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
@@ -89,7 +89,7 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 			</p>
 			<div class="wompi-mp-cols">
 				<p class="form-row wompi-mp-field">
-					<label for="wompi_mp_doc_type"><?php esc_html_e( 'Tipo de documento', 'wompi-moshipp' ); ?> <span class="required">*</span></label>
+					<label for="wompi_mp_doc_type"><?php esc_html_e( 'Tipo de documento', 'wompi-wp-moshipp' ); ?> <span class="required">*</span></label>
 					<select id="wompi_mp_doc_type" name="wompi_mp_doc_type">
 						<?php foreach ( self::DOC_TYPES as $code => $label ) : ?>
 							<option value="<?php echo esc_attr( $code ); ?>"><?php echo esc_html( $label ); ?></option>
@@ -97,7 +97,7 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 					</select>
 				</p>
 				<p class="form-row wompi-mp-field">
-					<label for="wompi_mp_doc_number"><?php esc_html_e( 'Número de documento', 'wompi-moshipp' ); ?> <span class="required">*</span></label>
+					<label for="wompi_mp_doc_number"><?php esc_html_e( 'Número de documento', 'wompi-wp-moshipp' ); ?> <span class="required">*</span></label>
 					<input
 						type="text"
 						id="wompi_mp_doc_number"
@@ -116,10 +116,10 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 
 	private function get_posted_fields(): array {
 		// phpcs:disable WordPress.Security.NonceVerification.Missing -- WooCommerce valida el nonce del checkout.
-		$bank      = (string) wc_clean( wp_unslash( $_POST['wompi_mp_pse_bank'] ?? '' ) );
-		$user_type = (string) wc_clean( wp_unslash( $_POST['wompi_mp_user_type'] ?? '0' ) );
-		$doc_type  = strtoupper( (string) wc_clean( wp_unslash( $_POST['wompi_mp_doc_type'] ?? '' ) ) );
-		$doc       = preg_replace( '/\D/', '', (string) wc_clean( wp_unslash( $_POST['wompi_mp_doc_number'] ?? '' ) ) );
+		$bank      = isset( $_POST['wompi_mp_pse_bank'] ) ? sanitize_text_field( wp_unslash( $_POST['wompi_mp_pse_bank'] ) ) : '';
+		$user_type = isset( $_POST['wompi_mp_user_type'] ) ? sanitize_text_field( wp_unslash( $_POST['wompi_mp_user_type'] ) ) : '0';
+		$doc_type  = isset( $_POST['wompi_mp_doc_type'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_POST['wompi_mp_doc_type'] ) ) ) : '';
+		$doc       = isset( $_POST['wompi_mp_doc_number'] ) ? preg_replace( '/\D/', '', sanitize_text_field( wp_unslash( $_POST['wompi_mp_doc_number'] ) ) ) : '';
 		// phpcs:enable
 		return array( $bank, $user_type, $doc_type, $doc );
 	}
@@ -135,11 +135,11 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 		list( $bank, $user_type, $doc_type, $doc ) = $this->get_posted_fields();
 		$valid                                     = true;
 		if ( ! $this->fields_are_valid( $bank, $user_type, $doc_type, $doc ) ) {
-			wc_add_notice( __( 'Selecciona tu banco e ingresa un documento válido para pagar con PSE.', 'wompi-moshipp' ), 'error' );
+			wc_add_notice( __( 'Selecciona tu banco e ingresa un documento válido para pagar con PSE.', 'wompi-wp-moshipp' ), 'error' );
 			$valid = false;
 		}
 		if ( ! $this->acceptance_was_checked() ) {
-			wc_add_notice( __( 'Debes aceptar el reglamento y la autorización de datos de Wompi.', 'wompi-moshipp' ), 'error' );
+			wc_add_notice( __( 'Debes aceptar el reglamento y la autorización de datos de Wompi.', 'wompi-wp-moshipp' ), 'error' );
 			$valid = false;
 		}
 		return $valid;
@@ -151,17 +151,17 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 
 		// El checkout por bloques no pasa por validate_fields(): revalidar aquí.
 		if ( ! $this->fields_are_valid( $bank, $user_type, $doc_type, $doc ) ) {
-			wc_add_notice( __( 'Selecciona tu banco e ingresa un documento válido para pagar con PSE.', 'wompi-moshipp' ), 'error' );
+			wc_add_notice( __( 'Selecciona tu banco e ingresa un documento válido para pagar con PSE.', 'wompi-wp-moshipp' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 		if ( ! $this->acceptance_was_checked() ) {
-			wc_add_notice( __( 'Debes aceptar el reglamento y la autorización de datos de Wompi.', 'wompi-moshipp' ), 'error' );
+			wc_add_notice( __( 'Debes aceptar el reglamento y la autorización de datos de Wompi.', 'wompi-wp-moshipp' ), 'error' );
 			return array( 'result' => 'failure' );
 		}
 
 		$description = sprintf(
 			/* translators: %s: número de pedido. */
-			__( 'Pedido %s', 'wompi-moshipp' ),
+			__( 'Pedido %s', 'wompi-wp-moshipp' ),
 			$order->get_order_number()
 		);
 
@@ -193,7 +193,7 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 			$order->add_order_note(
 				sprintf(
 					/* translators: %s: ID de transacción Wompi. */
-					__( 'Cliente redirigido al portal de su banco (PSE). Transacción: %s.', 'wompi-moshipp' ),
+					__( 'Cliente redirigido al portal de su banco (PSE). Transacción: %s.', 'wompi-wp-moshipp' ),
 					$tx['id']
 				)
 			);
@@ -211,7 +211,7 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 			);
 		}
 
-		wc_add_notice( __( 'No pudimos iniciar el pago con PSE. Intenta de nuevo en unos minutos.', 'wompi-moshipp' ), 'error' );
+		wc_add_notice( __( 'No pudimos iniciar el pago con PSE. Intenta de nuevo en unos minutos.', 'wompi-wp-moshipp' ), 'error' );
 		return array( 'result' => 'failure' );
 	}
 
@@ -240,6 +240,6 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 	}
 
 	public function waiting_message(): string {
-		return __( 'Estamos esperando la confirmación de tu banco.', 'wompi-moshipp' );
+		return __( 'Estamos esperando la confirmación de tu banco.', 'wompi-wp-moshipp' );
 	}
 }

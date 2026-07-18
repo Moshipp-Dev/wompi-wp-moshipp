@@ -31,11 +31,11 @@ class Wompi_MP_Admin_Order {
 		foreach ( $columns as $key => $label ) {
 			$new[ $key ] = $label;
 			if ( 'order_status' === $key ) {
-				$new['wompi_mp'] = __( 'Wompi', 'wompi-moshipp' );
+				$new['wompi_mp'] = __( 'Wompi', 'wompi-wp-moshipp' );
 			}
 		}
 		if ( ! isset( $new['wompi_mp'] ) ) {
-			$new['wompi_mp'] = __( 'Wompi', 'wompi-moshipp' );
+			$new['wompi_mp'] = __( 'Wompi', 'wompi-wp-moshipp' );
 		}
 		return $new;
 	}
@@ -77,12 +77,12 @@ class Wompi_MP_Admin_Order {
 		}
 		?>
 		<tr>
-			<td class="label"><?php esc_html_e( 'Comisión Wompi (estimada):', 'wompi-moshipp' ); ?></td>
+			<td class="label"><?php esc_html_e( 'Comisión Wompi (estimada):', 'wompi-wp-moshipp' ); ?></td>
 			<td width="1%"></td>
 			<td class="total">-<?php echo wp_kses_post( wc_price( $estimate['fee'] ) ); ?></td>
 		</tr>
 		<tr>
-			<td class="label"><?php esc_html_e( 'Neto estimado:', 'wompi-moshipp' ); ?></td>
+			<td class="label"><?php esc_html_e( 'Neto estimado:', 'wompi-wp-moshipp' ); ?></td>
 			<td width="1%"></td>
 			<td class="total"><strong><?php echo wp_kses_post( wc_price( $estimate['net'] ) ); ?></strong></td>
 		</tr>
@@ -124,7 +124,7 @@ class Wompi_MP_Admin_Order {
 		$screen = function_exists( 'wc_get_page_screen_id' ) ? wc_get_page_screen_id( 'shop-order' ) : 'shop_order';
 		add_meta_box(
 			'wompi-mp-order',
-			__( 'Pago Wompi', 'wompi-moshipp' ),
+			__( 'Pago Wompi', 'wompi-wp-moshipp' ),
 			array( __CLASS__, 'render' ),
 			$screen,
 			'side',
@@ -138,7 +138,7 @@ class Wompi_MP_Admin_Order {
 	public static function render( $post_or_order ): void {
 		$order = $post_or_order instanceof WC_Order ? $post_or_order : wc_get_order( $post_or_order->ID ?? 0 );
 		if ( ! $order instanceof WC_Order || ! Wompi_MP_Order_Sync::is_wompi_order( $order ) ) {
-			echo '<p>' . esc_html__( 'Esta orden no se pagó con Wompi.', 'wompi-moshipp' ) . '</p>';
+			echo '<p>' . esc_html__( 'Esta orden no se pagó con Wompi.', 'wompi-wp-moshipp' ) . '</p>';
 			return;
 		}
 
@@ -165,7 +165,7 @@ class Wompi_MP_Admin_Order {
 		}
 
 		if ( ! $tx_id ) {
-			echo '<p>' . esc_html__( 'Aún no hay una transacción Wompi asociada.', 'wompi-moshipp' ) . '</p>';
+			echo '<p>' . esc_html__( 'Aún no hay una transacción Wompi asociada.', 'wompi-wp-moshipp' ) . '</p>';
 			return;
 		}
 
@@ -185,31 +185,31 @@ class Wompi_MP_Admin_Order {
 
 		echo '<div class="wompi-mp-metabox">';
 
-		self::row( __( 'Estado', 'wompi-moshipp' ), self::status_badge( $status ), true );
-		self::row( __( 'Método', 'wompi-moshipp' ), esc_html( $method_label ), true );
-		self::row( __( 'Transacción', 'wompi-moshipp' ), '<code style="font-size:11px">' . esc_html( $tx_id ) . '</code>', true );
-		self::row( __( 'Referencia', 'wompi-moshipp' ), '<code style="font-size:11px">' . esc_html( (string) $order->get_meta( Wompi_MP_Order_Sync::META_REFERENCE ) ) . '</code>', true );
+		self::row( __( 'Estado', 'wompi-wp-moshipp' ), self::status_badge( $status ), true );
+		self::row( __( 'Método', 'wompi-wp-moshipp' ), esc_html( $method_label ), true );
+		self::row( __( 'Transacción', 'wompi-wp-moshipp' ), '<code style="font-size:11px">' . esc_html( $tx_id ) . '</code>', true );
+		self::row( __( 'Referencia', 'wompi-wp-moshipp' ), '<code style="font-size:11px">' . esc_html( (string) $order->get_meta( Wompi_MP_Order_Sync::META_REFERENCE ) ) . '</code>', true );
 
 		if ( 'test' === $env ) {
-			self::row( __( 'Ambiente', 'wompi-moshipp' ), '<span style="background:#f59e0b;color:#1c1917;border-radius:99px;padding:1px 8px;font-size:11px;font-weight:600">' . esc_html__( 'Sandbox (prueba)', 'wompi-moshipp' ) . '</span>', true );
+			self::row( __( 'Ambiente', 'wompi-wp-moshipp' ), '<span style="background:#f59e0b;color:#1c1917;border-radius:99px;padding:1px 8px;font-size:11px;font-weight:600">' . esc_html__( 'Sandbox (prueba)', 'wompi-wp-moshipp' ) . '</span>', true );
 		}
 
 		if ( ! empty( $snapshot['finalized_at'] ) ) {
 			$local = get_date_from_gmt( gmdate( 'Y-m-d H:i:s', strtotime( $snapshot['finalized_at'] ) ), 'Y-m-d H:i' );
-			self::row( __( 'Finalizada', 'wompi-moshipp' ), esc_html( $local ), true );
+			self::row( __( 'Finalizada', 'wompi-wp-moshipp' ), esc_html( $local ), true );
 		}
 
 		if ( ! empty( $snapshot['status_message'] ) ) {
-			self::row( __( 'Mensaje', 'wompi-moshipp' ), esc_html( $snapshot['status_message'] ), true );
+			self::row( __( 'Mensaje', 'wompi-wp-moshipp' ), esc_html( $snapshot['status_message'] ), true );
 		}
 
 		if ( $amount > 0 ) {
 			echo '<hr style="margin:10px 0;border:0;border-top:1px solid #e2e2e5">';
-			self::row( __( 'Monto pagado', 'wompi-moshipp' ), wp_kses_post( wc_price( $amount / 100 ) ), true );
+			self::row( __( 'Monto pagado', 'wompi-wp-moshipp' ), wp_kses_post( wc_price( $amount / 100 ) ), true );
 			self::render_fee_estimate( $amount, $status );
 		}
 
-		echo '<p style="margin:10px 0 0"><a href="https://comercios.wompi.co" target="_blank" rel="noopener" class="button button-small">' . esc_html__( 'Ver en el dashboard de Wompi ↗', 'wompi-moshipp' ) . '</a></p>';
+		echo '<p style="margin:10px 0 0"><a href="https://comercios.wompi.co" target="_blank" rel="noopener" class="button button-small">' . esc_html__( 'Ver en el dashboard de Wompi ↗', 'wompi-wp-moshipp' ) . '</a></p>';
 		echo '</div>';
 	}
 
@@ -225,11 +225,11 @@ class Wompi_MP_Admin_Order {
 			return;
 		}
 
-		self::row( __( 'Comisión estimada', 'wompi-moshipp' ), wp_kses_post( wc_price( $estimate['fee'] ) ), true );
-		self::row( __( 'Neto estimado', 'wompi-moshipp' ), '<strong>' . wp_kses_post( wc_price( $estimate['net'] ) ) . '</strong>', true );
+		self::row( __( 'Comisión estimada', 'wompi-wp-moshipp' ), wp_kses_post( wc_price( $estimate['fee'] ) ), true );
+		self::row( __( 'Neto estimado', 'wompi-wp-moshipp' ), '<strong>' . wp_kses_post( wc_price( $estimate['net'] ) ) . '</strong>', true );
 		echo '<p class="description" style="margin:6px 0 0;font-size:11px">' . sprintf(
 			/* translators: 1: %% variable, 2: fijo, 3: %% IVA. */
-			esc_html__( 'Estimación con tarifa %1$s%% + %2$s + IVA %3$s%% (configurable en WooCommerce → Wompi). Wompi no reporta la comisión real por API.', 'wompi-moshipp' ),
+			esc_html__( 'Estimación con tarifa %1$s%% + %2$s + IVA %3$s%% (configurable en WooCommerce → Wompi). Wompi no reporta la comisión real por API.', 'wompi-wp-moshipp' ),
 			esc_html( rtrim( rtrim( number_format( $estimate['percent'], 2, '.', '' ), '0' ), '.' ) ),
 			wp_kses_post( wc_price( $estimate['fixed'] ) ),
 			esc_html( rtrim( rtrim( number_format( $estimate['iva'], 2, '.', '' ), '0' ), '.' ) )
@@ -238,11 +238,11 @@ class Wompi_MP_Admin_Order {
 
 	private static function status_badge( string $status ): string {
 		$colors = array(
-			'APPROVED' => array( '#dcfce7', '#166534', __( 'Aprobada', 'wompi-moshipp' ) ),
-			'PENDING'  => array( '#fef3c7', '#92400e', __( 'Pendiente', 'wompi-moshipp' ) ),
-			'DECLINED' => array( '#fee2e2', '#991b1b', __( 'Declinada', 'wompi-moshipp' ) ),
-			'ERROR'    => array( '#fee2e2', '#991b1b', __( 'Error', 'wompi-moshipp' ) ),
-			'VOIDED'   => array( '#e4e4e7', '#3f3f46', __( 'Anulada', 'wompi-moshipp' ) ),
+			'APPROVED' => array( '#dcfce7', '#166534', __( 'Aprobada', 'wompi-wp-moshipp' ) ),
+			'PENDING'  => array( '#fef3c7', '#92400e', __( 'Pendiente', 'wompi-wp-moshipp' ) ),
+			'DECLINED' => array( '#fee2e2', '#991b1b', __( 'Declinada', 'wompi-wp-moshipp' ) ),
+			'ERROR'    => array( '#fee2e2', '#991b1b', __( 'Error', 'wompi-wp-moshipp' ) ),
+			'VOIDED'   => array( '#e4e4e7', '#3f3f46', __( 'Anulada', 'wompi-wp-moshipp' ) ),
 		);
 		list( $bg, $fg, $label ) = $colors[ $status ] ?? array( '#e4e4e7', '#3f3f46', $status );
 		return '<span style="background:' . esc_attr( $bg ) . ';color:' . esc_attr( $fg ) . ';border-radius:99px;padding:1px 10px;font-size:11px;font-weight:600">' . esc_html( $label ) . '</span>';

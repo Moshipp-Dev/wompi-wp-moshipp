@@ -2,9 +2,9 @@
 /**
  * Plugin Name: Wompi Pagos — Nequi, Daviplata y PSE
  * Description: Acepta pagos con Nequi (notificación push), Daviplata y PSE a través de Wompi Colombia. Compatible con el checkout clásico y el checkout por bloques de WooCommerce, y con HPOS.
- * Version: 0.5.1
+ * Version: 0.5.2
  * Author: Moshipp
- * Text Domain: wompi-moshipp
+ * Text Domain: wompi-wp-moshipp
  * Domain Path: /languages
  * Requires at least: 6.6
  * Requires PHP: 8.0
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WOMPI_MP_VERSION', '0.5.1' );
+define( 'WOMPI_MP_VERSION', '0.5.2' );
 define( 'WOMPI_MP_PLUGIN_FILE', __FILE__ );
 define( 'WOMPI_MP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WOMPI_MP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -45,13 +45,13 @@ function wompi_mp_brand_html( bool $checkout = false ): string {
 	if ( $checkout ) {
 		return '<p class="wompi-mp-brand">' . sprintf(
 			/* translators: %s: enlace a Moshipp. */
-			esc_html__( 'Integración de pagos por %s', 'wompi-moshipp' ),
+			esc_html__( 'Integración de pagos por %s', 'wompi-wp-moshipp' ),
 			$link
 		) . '</p>';
 	}
 	return '<span class="wompi-mp-brand-admin">' . sprintf(
 		/* translators: %s: enlace a Moshipp. */
-		esc_html__( 'Desarrollado por %s', 'wompi-moshipp' ),
+		esc_html__( 'Desarrollado por %s', 'wompi-wp-moshipp' ),
 		$link
 	) . '</span>';
 }
@@ -150,9 +150,9 @@ function wompi_mp_enqueue_admin_assets( $hook ) {
 		array(
 			'ajaxUrl'  => admin_url( 'admin-ajax.php' ),
 			'nonce'    => wp_create_nonce( 'wompi_mp_admin' ),
-			'checking' => __( 'Verificando…', 'wompi-moshipp' ),
-			'error'    => __( 'No fue posible verificar. Intenta de nuevo.', 'wompi-moshipp' ),
-			'noKeys'   => __( 'No hay llaves guardadas aún. Guarda los cambios primero.', 'wompi-moshipp' ),
+			'checking' => __( 'Verificando…', 'wompi-wp-moshipp' ),
+			'error'    => __( 'No fue posible verificar. Intenta de nuevo.', 'wompi-wp-moshipp' ),
+			'noKeys'   => __( 'No hay llaves guardadas aún. Guarda los cambios primero.', 'wompi-wp-moshipp' ),
 		)
 	);
 }
@@ -169,7 +169,7 @@ function wompi_mp_enqueue_checkout_styles() {
 
 function wompi_mp_missing_wc_notice() {
 	echo '<div class="notice notice-error"><p>';
-	esc_html_e( 'Wompi Pagos — Nequi y Daviplata requiere que WooCommerce esté instalado y activo.', 'wompi-moshipp' );
+	esc_html_e( 'Wompi Pagos — Nequi y Daviplata requiere que WooCommerce esté instalado y activo.', 'wompi-wp-moshipp' );
 	echo '</p></div>';
 }
 

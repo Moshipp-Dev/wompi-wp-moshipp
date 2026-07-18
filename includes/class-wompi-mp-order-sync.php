@@ -62,7 +62,7 @@ class Wompi_MP_Order_Sync {
 	 */
 	public static function handle_hosted_return(): void {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- retorno externo; la orden se valida vía la referencia firmada por Wompi.
-		$tx_id = (string) wc_clean( wp_unslash( $_GET['id'] ?? '' ) );
+		$tx_id = isset( $_GET['id'] ) ? sanitize_text_field( wp_unslash( $_GET['id'] ) ) : '';
 		if ( '' === $tx_id ) {
 			wp_safe_redirect( home_url() );
 			exit;
@@ -129,7 +129,7 @@ class Wompi_MP_Order_Sync {
 					$order->add_order_note(
 						sprintf(
 							/* translators: %s: ID de transacción Wompi. */
-							__( 'Pago aprobado por Wompi. Transacción: %s', 'wompi-moshipp' ),
+							__( 'Pago aprobado por Wompi. Transacción: %s', 'wompi-wp-moshipp' ),
 							$tx_id
 						)
 					);
@@ -144,7 +144,7 @@ class Wompi_MP_Order_Sync {
 						'failed',
 						sprintf(
 							/* translators: 1: estado Wompi, 2: ID de transacción, 3: mensaje. */
-							__( 'Pago %1$s en Wompi. Transacción: %2$s. %3$s', 'wompi-moshipp' ),
+							__( 'Pago %1$s en Wompi. Transacción: %2$s. %3$s', 'wompi-wp-moshipp' ),
 							$status,
 							$tx_id,
 							$message
@@ -228,7 +228,7 @@ class Wompi_MP_Order_Sync {
 		check_ajax_referer( 'wompi_mp_poll', 'nonce' );
 
 		$order_id  = absint( wp_unslash( $_POST['order_id'] ?? 0 ) );
-		$order_key = wc_clean( wp_unslash( $_POST['order_key'] ?? '' ) );
+		$order_key = isset( $_POST['order_key'] ) ? sanitize_text_field( wp_unslash( $_POST['order_key'] ) ) : '';
 
 		// Rate limit: el polling legítimo hace ~20 req/min por orden.
 		$rate_key = 'wompi_mp_rl_' . $order_id;
@@ -282,8 +282,8 @@ class Wompi_MP_Order_Sync {
 		if ( $order->has_status( 'failed' ) ) {
 			?>
 			<div class="wompi-mp-wait wompi-mp-failed" id="wompi-mp-wait-wrap">
-				<p><?php esc_html_e( 'Tu pago fue rechazado o no pudo completarse.', 'wompi-moshipp' ); ?></p>
-				<p><a class="button" href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>"><?php esc_html_e( 'Intentar de nuevo', 'wompi-moshipp' ); ?></a></p>
+				<p><?php esc_html_e( 'Tu pago fue rechazado o no pudo completarse.', 'wompi-wp-moshipp' ); ?></p>
+				<p><a class="button" href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>"><?php esc_html_e( 'Intentar de nuevo', 'wompi-wp-moshipp' ); ?></a></p>
 			</div>
 			<?php
 			return;
@@ -292,7 +292,7 @@ class Wompi_MP_Order_Sync {
 		$gateway = wc_get_payment_gateway_by_order( $order );
 		$message = $gateway instanceof Wompi_MP_Gateway
 			? $gateway->waiting_message()
-			: __( 'Estamos confirmando tu pago.', 'wompi-moshipp' );
+			: __( 'Estamos confirmando tu pago.', 'wompi-wp-moshipp' );
 
 		wp_enqueue_style( 'wompi-mp', WOMPI_MP_PLUGIN_URL . 'assets/css/wompi-mp.css', array(), WOMPI_MP_VERSION );
 		wp_enqueue_script( 'wompi-mp-poll', WOMPI_MP_PLUGIN_URL . 'assets/js/status-poll.js', array(), WOMPI_MP_VERSION, true );
@@ -306,7 +306,7 @@ class Wompi_MP_Order_Sync {
 				'orderKey'   => $order->get_order_key(),
 				'interval'   => 3000,
 				'timeout'    => 5 * MINUTE_IN_SECONDS * 1000,
-				'expiredMsg' => __( 'El tiempo de espera terminó. Si ya pagaste, esta página se actualizará al recibir la confirmación; si no, puedes reintentar el pago.', 'wompi-moshipp' ),
+				'expiredMsg' => __( 'El tiempo de espera terminó. Si ya pagaste, esta página se actualizará al recibir la confirmación; si no, puedes reintentar el pago.', 'wompi-wp-moshipp' ),
 				'retryUrl'   => $order->get_checkout_payment_url(),
 			)
 		);
@@ -314,7 +314,7 @@ class Wompi_MP_Order_Sync {
 		<div class="wompi-mp-wait" id="wompi-mp-wait" data-wompi-mp-relocate="1">
 			<span class="wompi-mp-spinner" aria-hidden="true"></span>
 			<p class="wompi-mp-wait-msg"><?php echo esc_html( $message ); ?></p>
-			<p class="wompi-mp-wait-sub"><?php esc_html_e( 'Esta página se actualizará automáticamente cuando se confirme el pago.', 'wompi-moshipp' ); ?></p>
+			<p class="wompi-mp-wait-sub"><?php esc_html_e( 'Esta página se actualizará automáticamente cuando se confirme el pago.', 'wompi-wp-moshipp' ); ?></p>
 		</div>
 		<?php
 	}
@@ -331,7 +331,7 @@ class Wompi_MP_Order_Sync {
 
 		$order_id = absint( get_query_var( 'order-received' ) );
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- misma validación que usa WooCommerce en la página de gracias.
-		$order_key = wc_clean( wp_unslash( $_GET['key'] ?? '' ) );
+		$order_key = isset( $_GET['key'] ) ? sanitize_text_field( wp_unslash( $_GET['key'] ) ) : '';
 
 		$order = wc_get_order( $order_id );
 		if ( ! $order instanceof WC_Order || ! hash_equals( $order->get_order_key(), (string) $order_key ) ) {
