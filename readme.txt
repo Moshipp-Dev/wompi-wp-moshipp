@@ -4,49 +4,58 @@ Tags: wompi, nequi, daviplata, pse, colombia
 Requires at least: 6.6
 Tested up to: 7.0
 Requires PHP: 8.0
-Stable tag: 0.5.2
+Stable tag: 0.5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Acepta pagos con Nequi (notificación push), Daviplata y PSE en WooCommerce a través de Wompi Colombia, sin sacar al cliente de tu tienda.
+Accept payments in Colombia with Nequi (push notification), Daviplata and PSE through Wompi, without sending customers away from your store.
 
 == Description ==
 
-Integración directa con el API de Wompi Colombia:
+Direct integration with the Wompi Colombia API:
 
-* **Nequi**: el cliente ingresa su celular en el checkout, recibe una notificación push en su app Nequi y aprueba el pago. La tienda confirma el resultado en segundos, sin redirecciones.
-* **Daviplata**: el cliente ingresa su documento, recibe un código OTP por SMS y lo confirma en la página segura de Wompi (flujo hosted).
-* **PSE**: débito bancario; el cliente elige su banco y autoriza en el portal bancario.
-* Compatible con el **checkout clásico (shortcode)** y el **checkout por bloques**.
-* Compatible con **HPOS** (High-Performance Order Storage).
-* Confirmación de pagos vía **webhooks firmados** (SHA256) — la fuente de verdad, con polling como respaldo.
-* Modo sandbox y producción con credenciales separadas.
-* Log de depuración opcional (WooCommerce → Estado → Logs).
+* **Nequi**: the customer enters their mobile number at checkout, receives a push notification in the Nequi app and approves the payment. The store confirms the result in seconds, with no redirects.
+* **Daviplata**: the customer enters their ID document, receives an OTP code via SMS and confirms it on Wompi's secure hosted page.
+* **PSE**: bank debit; the customer picks their bank (live list from the API) and authorizes the payment on the bank's portal.
+* Compatible with the **classic (shortcode) checkout** and the **block-based checkout**.
+* Compatible with **HPOS** (High-Performance Order Storage).
+* Payment confirmation via **signed webhooks** (SHA-256 checksum) as the source of truth, with thank-you page polling as backup and a **15-minute reconciliation cron** covering missed webhooks.
+* "Wompi payment" panel on each order, status column on the orders list, and **estimated fee/net amounts** on the order totals.
+* Optional customer email with payment instructions while the payment is pending.
+* Sandbox and production modes with separate credentials, live credential verification, and optional debug logging.
+* Wompi user-agreement and personal-data-authorization acceptance checkbox (Colombian regulatory requirement), with fresh acceptance tokens per transaction.
 
-**Requisitos**: cuenta activa en Wompi (comercios.wompi.co), tienda en pesos colombianos (COP) y HTTPS.
+**Requirements**: an active Wompi account (comercios.wompi.co), store currency in Colombian pesos (COP), and HTTPS.
 
-**Limitaciones conocidas** (propias del API de Wompi):
+**Known limitations** (inherent to the Wompi API):
 
-* Los reembolsos de Nequi/Daviplata no se pueden hacer desde WordPress; se gestionan en el dashboard de Wompi.
-* Solo moneda COP.
+* Nequi/Daviplata/PSE refunds cannot be executed from WordPress; they are handled in the Wompi dashboard.
+* COP currency only.
+* Wompi does not report the actual fee charged via API: amounts shown on orders are estimates based on your configured rate.
 
 == Installation ==
 
-1. Sube el plugin e instálalo. Requiere WooCommerce activo.
-2. Ve a WooCommerce → Ajustes → Pagos y abre "Wompi — Nequi" o "Wompi — Daviplata" (las credenciales se comparten entre ambos).
-3. Ingresa tus llaves de sandbox y/o producción de comercios.wompi.co.
-4. Copia la "URL de eventos (webhook)" que muestra la pantalla de ajustes y configúrala en el dashboard de Wompi para cada ambiente.
-5. Activa los métodos y prueba en modo sandbox: Nequi `3991111111` aprueba, `3992222222` declina; OTP Daviplata `574829` aprueba, `932015` declina.
+1. Upload and install the plugin. Requires WooCommerce.
+2. Go to WooCommerce → Wompi (central settings page).
+3. Enter your sandbox and/or production keys from comercios.wompi.co and use "Verify connection" to validate them.
+4. Copy the events (webhook) URL shown on the settings page and register it in the Wompi dashboard for each environment.
+5. Enable the payment methods and test in sandbox mode: Nequi `3991111111` approves, `3992222222` declines; Daviplata OTP `574829` approves, `932015` declines.
 
 == Changelog ==
 
+= 0.5.3 =
+* readme.txt rewritten in English (WordPress.org guideline)
+
+= 0.5.2 =
+* Text domain unified with the plugin slug, input sanitization improvements, translation template added
+
 = 0.5.0 =
-* Nuevo método de pago PSE (débito bancario)
-* Página central de configuración WooCommerce → Wompi
-* Reconciliación automática de órdenes pendientes cada 15 minutos
-* Columna de estado Wompi en el listado de pedidos y comisión/neto estimados en los totales
-* Email opcional con instrucciones de pago pendiente
-* Logos oficiales de los métodos, transacciones con expiración y actualizaciones desde GitHub
+* New PSE payment method (bank debit)
+* Central settings page at WooCommerce → Wompi
+* Automatic reconciliation of pending orders every 15 minutes
+* Wompi status column on the orders list and estimated fee/net on order totals
+* Optional pending-payment instructions email
+* Official payment method logos, transaction expiration, and updates from GitHub
 
 = 0.1.0 =
-* Versión inicial: gateways Nequi (push) y Daviplata (hosted), webhooks firmados, soporte Checkout Blocks y HPOS.
+* Initial release: Nequi (push) and Daviplata (hosted) gateways, signed webhooks, Checkout Blocks and HPOS support.
