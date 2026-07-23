@@ -183,7 +183,7 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 			return array( 'result' => 'failure' );
 		}
 
-		$result = $this->wait_for_bank_url( (string) $tx['id'] );
+		$result = $this->wait_for_bank_url( (string) $tx['id'], $order );
 
 		if ( function_exists( 'WC' ) && isset( WC()->cart ) ) {
 			WC()->cart->empty_cart();
@@ -217,10 +217,11 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 
 	/**
 	 * Espera la URL del banco (payment_method.extra.async_payment_url).
+	 * Si Wompi finaliza la transacción de inmediato, sincroniza la orden.
 	 *
 	 * @return array{url?:string,final?:bool}
 	 */
-	private function wait_for_bank_url( string $transaction_id ): array {
+	private function wait_for_bank_url( string $transaction_id, WC_Order $order ): array {
 		for ( $attempt = 0; $attempt < 6; $attempt++ ) {
 			sleep( 2 );
 			$tx = $this->api()->get_transaction( $transaction_id );
@@ -233,6 +234,7 @@ class Wompi_MP_Gateway_PSE extends Wompi_MP_Gateway {
 				return array( 'url' => $url );
 			}
 			if ( $fin ) {
+				Wompi_MP_Order_Sync::apply_transaction( $order, $tx );
 				return array( 'final' => true );
 			}
 		}

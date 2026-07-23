@@ -135,14 +135,88 @@ class Wompi_MP_Settings_Page {
 		<?php
 	}
 
+	/**
+	 * Cada llave de Wompi tiene un prefijo único. Detecta llaves pegadas en el
+	 * campo equivocado (causa típica del error "La firma es inválida").
+	 *
+	 * @return string[] Mensajes de problema, vacío si todo cuadra.
+	 */
+	private static function key_format_issues( array $values ): array {
+		$expected = array(
+			'test_public_key'       => array( 'pub_test_', __( 'Llave pública de prueba', 'wompi-wp-moshipp' ) ),
+			'test_private_key'      => array( 'prv_test_', __( 'Llave privada de prueba', 'wompi-wp-moshipp' ) ),
+			'test_integrity_secret' => array( 'test_integrity_', __( 'Secreto de integridad de prueba', 'wompi-wp-moshipp' ) ),
+			'test_events_secret'    => array( 'test_events_', __( 'Secreto de eventos de prueba', 'wompi-wp-moshipp' ) ),
+			'prod_public_key'       => array( 'pub_prod_', __( 'Llave pública de producción', 'wompi-wp-moshipp' ) ),
+			'prod_private_key'      => array( 'prv_prod_', __( 'Llave privada de producción', 'wompi-wp-moshipp' ) ),
+			'prod_integrity_secret' => array( 'prod_integrity_', __( 'Secreto de integridad de producción', 'wompi-wp-moshipp' ) ),
+			'prod_events_secret'    => array( 'prod_events_', __( 'Secreto de eventos de producción', 'wompi-wp-moshipp' ) ),
+		);
+
+		$known_prefixes = array(
+			'pub_test_'       => __( 'una llave pública de prueba', 'wompi-wp-moshipp' ),
+			'prv_test_'       => __( 'una llave privada de prueba', 'wompi-wp-moshipp' ),
+			'test_integrity_' => __( 'un secreto de integridad de prueba', 'wompi-wp-moshipp' ),
+			'test_events_'    => __( 'un secreto de eventos de prueba', 'wompi-wp-moshipp' ),
+			'pub_prod_'       => __( 'una llave pública de producción', 'wompi-wp-moshipp' ),
+			'prv_prod_'       => __( 'una llave privada de producción', 'wompi-wp-moshipp' ),
+			'prod_integrity_' => __( 'un secreto de integridad de producción', 'wompi-wp-moshipp' ),
+			'prod_events_'    => __( 'un secreto de eventos de producción', 'wompi-wp-moshipp' ),
+		);
+
+		$issues = array();
+		foreach ( $expected as $field => list( $prefix, $label ) ) {
+			$value = trim( (string) ( $values[ $field ] ?? '' ) );
+			if ( '' === $value || 0 === strpos( $value, $prefix ) ) {
+				continue;
+			}
+			$looks_like = '';
+			foreach ( $known_prefixes as $known => $description ) {
+				if ( 0 === strpos( $value, $known ) ) {
+					$looks_like = $description;
+					break;
+				}
+			}
+			if ( $looks_like ) {
+				$issues[] = sprintf(
+					/* translators: 1: campo, 2: prefijo esperado, 3: qué parece ser. */
+					__( '%1$s: se esperaba una llave que empiece por "%2$s", pero lo pegado parece ser %3$s.', 'wompi-wp-moshipp' ),
+					$label,
+					$prefix,
+					$looks_like
+				);
+			} else {
+				$issues[] = sprintf(
+					/* translators: 1: campo, 2: prefijo esperado. */
+					__( '%1$s: debe empezar por "%2$s". Revisa que no tenga espacios ni esté incompleta.', 'wompi-wp-moshipp' ),
+					$label,
+					$prefix
+				);
+			}
+		}
+		return $issues;
+	}
+
 	public static function render(): void {
 		$values      = self::credentials();
 		$is_test     = 'yes' === $values['testmode'];
 		$webhook_url = Wompi_MP_Webhook::url();
+		$key_issues  = self::key_format_issues( $values );
 		?>
 		<div class="wrap">
 			<?php if ( ! empty( $_GET['updated'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
 				<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Configuración de Wompi guardada.', 'wompi-wp-moshipp' ); ?></p></div>
+			<?php endif; ?>
+			<?php if ( $key_issues ) : ?>
+				<div class="wompi-mp-key-alert">
+					<p><strong><?php esc_html_e( '⚠ Hay llaves de Wompi en el campo equivocado — los pagos fallarán con "La firma es inválida" hasta corregirlas:', 'wompi-wp-moshipp' ); ?></strong></p>
+					<ul>
+						<?php foreach ( $key_issues as $issue ) : ?>
+							<li><?php echo esc_html( $issue ); ?></li>
+						<?php endforeach; ?>
+					</ul>
+					<p><?php esc_html_e( 'Copia cada llave desde el dashboard de Wompi (Mi cuenta → Llaves del API): cada una tiene un prefijo distinto que indica a qué campo pertenece.', 'wompi-wp-moshipp' ); ?></p>
+				</div>
 			<?php endif; ?>
 
 			<div class="wompi-mp-admin-hero">

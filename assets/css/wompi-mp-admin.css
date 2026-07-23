@@ -1,5 +1,25 @@
 /* ---------- Pantalla de ajustes de los gateways Wompi ---------- */
 
+/* Alerta de llaves mal configuradas (clase propia: WP reubica los .notice) */
+.wompi-mp-key-alert {
+	margin: 1.2em 0 0;
+	padding: 1em 1.4em;
+	background: #fef2f2;
+	border: 1px solid #fecaca;
+	border-left: 4px solid #dc2626;
+	border-radius: 10px;
+	color: #7f1d1d;
+}
+
+.wompi-mp-key-alert ul {
+	list-style: disc;
+	margin: 0.4em 0 0.6em 1.5em;
+}
+
+.wompi-mp-key-alert li {
+	margin-bottom: 0.3em;
+}
+
 .wompi-mp-admin-hero {
 	--wompi-mp-accent: #6329f3;
 	--wompi-mp-accent-2: #a06af9;

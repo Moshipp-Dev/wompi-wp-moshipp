@@ -145,7 +145,7 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 			return array( 'result' => 'failure' );
 		}
 
-		$hosted_url = $this->wait_for_hosted_url( (string) $tx['id'] );
+		$hosted_url = $this->wait_for_hosted_url( (string) $tx['id'], $order );
 
 		if ( ! $hosted_url ) {
 			$order->add_order_note(
@@ -180,8 +180,10 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 	/**
 	 * Espera a que la transacción exponga payment_method.extra.url.
 	 * En sandbox aparece en el primer intento (~2 s); damos hasta ~12 s.
+	 * Si Wompi finaliza la transacción de inmediato (p. ej. "La firma es
+	 * inválida"), sincroniza la orden y muestra el motivo real.
 	 */
-	private function wait_for_hosted_url( string $transaction_id ): ?string {
+	private function wait_for_hosted_url( string $transaction_id, WC_Order $order ): ?string {
 		for ( $attempt = 0; $attempt < 6; $attempt++ ) {
 			sleep( 2 );
 			$tx = $this->api()->get_transaction( $transaction_id );
@@ -194,6 +196,18 @@ class Wompi_MP_Gateway_Daviplata extends Wompi_MP_Gateway {
 			}
 			$status = strtoupper( (string) ( $tx['status'] ?? 'PENDING' ) );
 			if ( 'PENDING' !== $status ) {
+				Wompi_MP_Order_Sync::apply_transaction( $order, $tx );
+				$message = (string) ( $tx['status_message'] ?? '' );
+				if ( '' !== $message ) {
+					wc_add_notice(
+						sprintf(
+							/* translators: %s: mensaje de Wompi. */
+							__( 'Wompi rechazó la transacción: %s', 'wompi-wp-moshipp' ),
+							$message
+						),
+						'error'
+					);
+				}
 				return null;
 			}
 		}

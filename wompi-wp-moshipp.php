@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Wompi Pagos — Nequi, Daviplata y PSE
  * Description: Acepta pagos con Nequi (notificación push), Daviplata y PSE a través de Wompi Colombia. Compatible con el checkout clásico y el checkout por bloques de WooCommerce, y con HPOS.
- * Version: 0.5.3
+ * Version: 0.5.4
  * Author: Moshipp
  * Text Domain: wompi-wp-moshipp
  * Domain Path: /languages
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'WOMPI_MP_VERSION', '0.5.3' );
+define( 'WOMPI_MP_VERSION', '0.5.4' );
 define( 'WOMPI_MP_PLUGIN_FILE', __FILE__ );
 define( 'WOMPI_MP_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WOMPI_MP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
